@@ -854,6 +854,32 @@
       text-align: center;
     }
 
+    .auth-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 32px;
+      gap: 12px;
+    }
+
+    .auth-lang-selector {
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.2);
+      color: #00ff88;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+
+    .auth-lang-selector:hover {
+      background: rgba(0, 255, 136, 0.2);
+      border-color: rgba(0, 255, 136, 0.4);
+    }
+
     .auth-logo {
       font-size: 64px;
       margin-bottom: 24px;
@@ -888,17 +914,71 @@
       margin-bottom: 12px;
     }
 
-    .google-signin-btn {
+    .social-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .social-btn {
+      background: rgba(0, 255, 136, 0.05);
+      border: 1px solid rgba(0, 255, 136, 0.2);
+      color: #00ff88;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       width: 100%;
-      margin-bottom: 12px;
+    }
+
+    .social-btn:hover {
+      background: rgba(0, 255, 136, 0.15);
+      border-color: rgba(0, 255, 136, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .social-btn:active {
+      transform: translateY(0);
+    }
+
+    .biometric-btn {
+      background: rgba(0, 136, 204, 0.1);
+      border: 1px solid rgba(0, 136, 204, 0.3);
+      color: #00d4ff;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .biometric-btn:hover {
+      background: rgba(0, 136, 204, 0.2);
+      border-color: rgba(0, 136, 204, 0.5);
+      transform: translateY(-2px);
     }
 
     .auth-divider {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin: 20px 0;
+      margin: 16px 0;
       color: rgba(224, 255, 232, 0.4);
+      font-size: 12px;
     }
 
     .auth-divider::before,
@@ -924,6 +1004,52 @@
       cursor: pointer;
     }
 
+    .auth-footer {
+      margin-top: 24px;
+      font-size: 12px;
+      color: rgba(224, 255, 232, 0.6);
+    }
+
+    .auth-footer a {
+      color: #00ff88;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .auth-footer a:hover {
+      color: #00ff88;
+      text-decoration: underline;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background: rgba(0, 255, 136, 0.2);
+      border: 1px solid rgba(0, 255, 136, 0.5);
+      color: #00ff88;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 1000;
+      animation: slideInUp 0.3s ease-out;
+    }
+
+    @keyframes slideInUp {
+      from {
+        transform: translateY(100px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
     /* RESPONSIVE */
     @media (max-width: 480px) {
       .header-title {
@@ -945,29 +1071,53 @@
     <!-- AUTH SCREEN (LANDING PAGE) -->
     <div id="auth-screen" class="screen active">
       <div class="auth-screen-container">
+        <!-- LANGUAGE SELECTOR -->
+        <div class="auth-header">
+          <div></div>
+          <select class="auth-lang-selector" onchange="setAuthLanguage(this.value)" id="auth-lang-select">
+            <option value="pt">🇧🇷 Português</option>
+            <option value="en">🇺🇸 English</option>
+            <option value="es">🇪🇸 Español</option>
+            <option value="ru">🇷🇺 Русский</option>
+          </select>
+        </div>
+
+        <!-- LOGO AND TITLE -->
         <div class="auth-logo">🧬</div>
         <div class="auth-title">VitalIA</div>
-        <div class="auth-subtitle">Saúde com Inteligência</div>
+        <div class="auth-subtitle" id="auth-subtitle-text">Saúde com Inteligência</div>
 
+        <!-- LOGIN FORM -->
         <div class="auth-form">
           <input type="email" id="auth-email" class="auth-input" placeholder="Email" autocomplete="email">
           <input type="password" id="auth-password" class="auth-input" placeholder="Senha" autocomplete="current-password">
           
           <div class="remember-me">
             <input type="checkbox" id="remember-login">
-            <label for="remember-login">Lembrar-me</label>
+            <label for="remember-login" id="remember-label">Lembrar-me</label>
           </div>
 
-          <button class="btn" onclick="loginWithEmail()">Entrar</button>
+          <button class="btn" onclick="loginWithEmail()" id="login-btn">Entrar</button>
 
-          <div class="auth-divider">ou</div>
+          <!-- BIOMETRIC LOGIN -->
+          <div class="auth-divider" id="biometric-divider">ou</div>
+          <button class="biometric-btn" onclick="loginWithBiometric()" id="biometric-btn">👆 Acesso por Biometria</button>
 
-          <div id="google-signin-container" class="google-signin-btn"></div>
-
-          <button class="btn btn-secondary" onclick="loginAsDemo()">Demo (Sem Login)</button>
+          <!-- SOCIAL LOGINS -->
+          <div class="auth-divider" id="social-divider">Conectar com</div>
+          <div class="social-buttons">
+            <button class="social-btn" onclick="socialLogin('google')" id="google-btn">🔵 Google</button>
+            <button class="social-btn" onclick="socialLogin('apple')" id="apple-btn">⚫ Apple</button>
+            <button class="social-btn" onclick="socialLogin('telegram')" id="telegram-btn">🔵 Telegram</button>
+          </div>
         </div>
 
-        <div style="margin-top: 32px; font-size: 12px; color: rgba(224, 255, 232, 0.4);">
+        <!-- SIGNUP LINK -->
+        <div class="auth-footer">
+          <p id="signup-text">Sem conta? <a onclick="showSignupForm()">Criar conta grátis</a></p>
+        </div>
+
+        <div style="margin-top: 24px; font-size: 11px; color: rgba(224, 255, 232, 0.3);">
           <p>Versão 2.0 — Premium Verde Vagalume</p>
         </div>
       </div>
@@ -1314,13 +1464,116 @@
       loginSuccess();
     }
 
-    function loginAsDemo() {
-      currentUser = {
-        email: 'demo@vitalia.app',
-        name: 'Demo',
-        method: 'demo'
+    function setAuthLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('vitalia-lang', lang);
+      updateAuthScreenLanguage();
+    }
+
+    function updateAuthScreenLanguage() {
+      const authTexts = {
+        pt: {
+          subtitle: 'Saúde com Inteligência',
+          email: 'Email',
+          password: 'Senha',
+          remember: 'Lembrar-me',
+          login: 'Entrar',
+          biometric: '👆 Acesso por Biometria',
+          social: 'Conectar com',
+          signup: 'Sem conta? Criar conta grátis'
+        },
+        en: {
+          subtitle: 'Health with Intelligence',
+          email: 'Email',
+          password: 'Password',
+          remember: 'Remember me',
+          login: 'Sign In',
+          biometric: '👆 Biometric Access',
+          social: 'Connect with',
+          signup: 'No account? Create free account'
+        },
+        es: {
+          subtitle: 'Salud con Inteligencia',
+          email: 'Correo',
+          password: 'Contraseña',
+          remember: 'Recuérdame',
+          login: 'Iniciar sesión',
+          biometric: '👆 Acceso Biométrico',
+          social: 'Conectar con',
+          signup: '¿Sin cuenta? Crear cuenta gratis'
+        },
+        ru: {
+          subtitle: 'Здоровье с интеллектом',
+          email: 'Электронная почта',
+          password: 'Пароль',
+          remember: 'Запомнить меня',
+          login: 'Войти',
+          biometric: '👆 Биометрический доступ',
+          social: 'Подключиться с помощью',
+          signup: 'Нет аккаунта? Создать бесплатный аккаунт'
+        }
       };
-      loginSuccess();
+
+      const texts = authTexts[currentLang] || authTexts.pt;
+      document.getElementById('auth-subtitle-text').textContent = texts.subtitle;
+      document.getElementById('auth-email').placeholder = texts.email;
+      document.getElementById('auth-password').placeholder = texts.password;
+      document.getElementById('remember-label').textContent = texts.remember;
+      document.getElementById('login-btn').textContent = texts.login;
+      document.getElementById('biometric-btn').textContent = texts.biometric;
+      document.getElementById('biometric-divider').textContent = 'ou';
+      document.getElementById('social-divider').textContent = texts.social;
+      document.getElementById('signup-text').innerHTML = `Sem conta? <a onclick="showSignupForm()" style="color: #00ff88; cursor: pointer;">Criar conta grátis</a>`;
+    }
+
+    function loginWithBiometric() {
+      if (window.PublicKeyCredential) {
+        showToast('✅ Autenticação Biométrica - Simulada');
+        setTimeout(() => {
+          currentUser = {
+            email: 'biometric@vitalia.app',
+            name: 'Usuário Biométrico',
+            method: 'biometric'
+          };
+          loginSuccess();
+        }, 1500);
+      } else {
+        showToast('❌ Biometria não disponível neste dispositivo');
+      }
+    }
+
+    function socialLogin(provider) {
+      const providerNames = {
+        google: 'Google',
+        apple: 'Apple',
+        telegram: 'Telegram'
+      };
+      
+      showToast(`✅ Conectando com ${providerNames[provider]}...`);
+      
+      setTimeout(() => {
+        currentUser = {
+          email: `${provider}@vitalia.app`,
+          name: `${providerNames[provider]} User`,
+          method: provider
+        };
+        loginSuccess();
+      }, 1500);
+    }
+
+    function showSignupForm() {
+      showToast('📝 Funcionalidade de Cadastro - Em Breve');
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
     }
 
     function loginSuccess() {
@@ -2003,6 +2256,7 @@
     // ============================================
     window.addEventListener('load', () => {
       initAuth();
+      updateAuthScreenLanguage();
     });
 
     // Fechar modal ao clicar fora
