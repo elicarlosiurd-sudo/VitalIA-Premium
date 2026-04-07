@@ -2427,5 +2427,415 @@
     </div>
   </div>
 
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, OAuthProvider } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+  import { getFirestore, collection, addDoc, query, where, getDocs, doc, setDoc, getDoc, updateDoc, deleteDoc, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+  // Configuração Firebase
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDN5Ek-lJ8_9qK0pL1mN2oP3qR4sT5uV6w",
+      authDomain: "vitalia-app-4cc06.firebaseapp.com",
+      projectId: "vitalia-app-4cc06",
+      storageBucket: "vitalia-app-4cc06.appspot.com",
+      messagingSenderId: "123456789012",
+      appId: "1:123456789012:web:abcdefghijklmnop"
+    };
+
+  
+  // Inicializar Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Provedores de Autenticação
+  const googleProvider = new GoogleAuthProvider();
+  const appleProvider = new OAuthProvider('apple.com');
+
+  // ============================================================================
+  // AUTENTICAÇÃO COM FIREBASE
+  // ============================================================================
+
+  window.loginWithFirebaseEmail = async (email, password) => {
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      console.log('✅ Login bem-sucedido:', result.user.email);
+      
+      // Carregar dados do usuário
+      await loadUserProfile(result.user.uid);
+      
+      // Fazer login no app
+      currentUser = {
+        email: result.user.email,
+        name: result.user.displayName || email.split('@')[0],
+        uid: result.user.uid,
+        method: 'firebase-email'
+      };
+      
+      loginSuccess();
+      return result.user;
+    } catch (error) {
+      console.error('❌ Erro ao fazer login:', error.message);
+      showToast('Erro ao fazer login: ' + error.message, 'error');
+      return null;
+    }
+  };
+
+  window.registerWithFirebase = async (email, password, name) => {
+    try {
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      const user = result.user;
+      
+      // Salvar perfil do usuário no Firestore
+      await setDoc(doc(db, 'users', user.uid), {
+        uid: user.uid,
+        email: email,
+        name: name,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        profile: {
+          age: 0,
+          weight: 0,
+          height: 0,
+          gender: '',
+          objective: '',
+          activityLevel: '',
+          dietaryRestrictions: []
+        }
+      });
+
+      console.log('✅ Cadastro bem-sucedido:', user.email);
+      
+      currentUser = {
+        email: email,
+        name: name,
+        uid: user.uid,
+        method: 'firebase-email'
+      };
+      
+      loginSuccess();
+      return user;
+    } catch (error) {
+      console.error('❌ Erro ao fazer cadastro:', error.message);
+      showToast('Erro ao fazer cadastro: ' + error.message, 'error');
+      return null;
+    }
+  };
+
+  window.loginWithGoogle = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      
+      // Verificar se é novo usuário
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      if (!userDoc.exists()) {
+        // Criar perfil para novo usuário
+        await setDoc(doc(db, 'users', user.uid), {
+          uid: user.uid,
+          email: user.email,
+          name: user.displayName,
+          photoURL: user.photoURL,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          profile: {
+            age: 0,
+            weight: 0,
+            height: 0,
+            gender: '',
+            objective: '',
+            activityLevel: '',
+            dietaryRestrictions: []
+          }
+        });
+      }
+
+      console.log('✅ Login com Google bem-sucedido:', user.email);
+      
+      currentUser = {
+        email: user.email,
+        name: user.displayName,
+        uid: user.uid,
+        method: 'google'
+      };
+      
+      loginSuccess();
+      return user;
+    } catch (error) {
+      console.error('❌ Erro ao fazer login com Google:', error.message);
+      showToast('Erro ao fazer login com Google', 'error');
+      return null;
+    }
+  };
+
+  window.loginWithApple = async () => {
+    try {
+      const result = await signInWithPopup(auth, appleProvider);
+      const user = result.user;
+      
+      // Verificar se é novo usuário
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      if (!userDoc.exists()) {
+        await setDoc(doc(db, 'users', user.uid), {
+          uid: user.uid,
+          email: user.email,
+          name: user.displayName || 'Usuário Apple',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          profile: {
+            age: 0,
+            weight: 0,
+            height: 0,
+            gender: '',
+            objective: '',
+            activityLevel: '',
+            dietaryRestrictions: []
+          }
+        });
+      }
+
+      console.log('✅ Login com Apple bem-sucedido:', user.email);
+      
+      currentUser = {
+        email: user.email,
+        name: user.displayName || 'Usuário',
+        uid: user.uid,
+        method: 'apple'
+      };
+      
+      loginSuccess();
+      return user;
+    } catch (error) {
+      console.error('❌ Erro ao fazer login com Apple:', error.message);
+      showToast('Erro ao fazer login com Apple', 'error');
+      return null;
+    }
+  };
+
+  window.logoutFromFirebase = async () => {
+    try {
+      await signOut(auth);
+      console.log('✅ Logout bem-sucedido');
+      currentUser = null;
+      return true;
+    } catch (error) {
+      console.error('❌ Erro ao fazer logout:', error.message);
+      return false;
+    }
+  };
+
+  // ============================================================================
+  // GERENCIAR PERFIL DO USUÁRIO
+  // ============================================================================
+
+  window.loadUserProfile = async (uid) => {
+    try {
+      const userDoc = await getDoc(doc(db, 'users', uid));
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        APP.profile = userData.profile || {};
+        console.log('✅ Perfil carregado:', APP.profile);
+        return userData;
+      }
+    } catch (error) {
+      console.error('❌ Erro ao carregar perfil:', error.message);
+    }
+  };
+
+  window.updateUserProfile = async (profileData) => {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        showToast('Você precisa estar logado', 'error');
+        return false;
+      }
+
+      await updateDoc(doc(db, 'users', user.uid), {
+        'profile': profileData,
+        'updatedAt': new Date().toISOString()
+      });
+
+      APP.profile = profileData;
+      console.log('✅ Perfil atualizado');
+      showToast('Perfil atualizado com sucesso!', 'success');
+      return true;
+    } catch (error) {
+      console.error('❌ Erro ao atualizar perfil:', error.message);
+      showToast('Erro ao atualizar perfil', 'error');
+      return false;
+    }
+  };
+
+  // ============================================================================
+  // GERENCIAR REFEIÇÕES
+  // ============================================================================
+
+  window.saveMealToFirebase = async (mealData) => {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        showToast('Você precisa estar logado', 'error');
+        return false;
+      }
+
+      await addDoc(collection(db, 'users', user.uid, 'meals'), {
+        ...mealData,
+        date: mealData.date || new Date().toISOString().split('T')[0],
+        createdAt: new Date().toISOString()
+      });
+
+      console.log('✅ Refeição salva com sucesso');
+      showToast('Refeição salva com sucesso!', 'success');
+      return true;
+    } catch (error) {
+      console.error('❌ Erro ao salvar refeição:', error.message);
+      showToast('Erro ao salvar refeição', 'error');
+      return false;
+    }
+  };
+
+  window.getMealsFromFirebase = async (date = null) => {
+    try {
+      const user = auth.currentUser;
+      if (!user) return [];
+
+      let q;
+      if (date) {
+        q = query(
+          collection(db, 'users', user.uid, 'meals'),
+          where('date', '==', date),
+          orderBy('createdAt', 'desc')
+        );
+      } else {
+        q = query(
+          collection(db, 'users', user.uid, 'meals'),
+          orderBy('createdAt', 'desc')
+        );
+      }
+
+      const querySnapshot = await getDocs(q);
+      const meals = [];
+      querySnapshot.forEach((doc) => {
+        meals.push({ id: doc.id, ...doc.data() });
+      });
+
+      console.log('✅ Refeições carregadas:', meals.length);
+      return meals;
+    } catch (error) {
+      console.error('❌ Erro ao obter refeições:', error.message);
+      return [];
+    }
+  };
+
+  window.deleteMealFromFirebase = async (mealId) => {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        showToast('Você precisa estar logado', 'error');
+        return false;
+      }
+
+      await deleteDoc(doc(db, 'users', user.uid, 'meals', mealId));
+      console.log('✅ Refeição deletada');
+      showToast('Refeição removida!', 'success');
+      return true;
+    } catch (error) {
+      console.error('❌ Erro ao deletar refeição:', error.message);
+      showToast('Erro ao deletar refeição', 'error');
+      return false;
+    }
+  };
+
+  // ============================================================================
+  // GERENCIAR PROGRESSO
+  // ============================================================================
+
+  window.saveProgressToFirebase = async (progressData) => {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        showToast('Você precisa estar logado', 'error');
+        return false;
+      }
+
+      await addDoc(collection(db, 'users', user.uid, 'progress'), {
+        ...progressData,
+        date: progressData.date || new Date().toISOString().split('T')[0],
+        createdAt: new Date().toISOString()
+      });
+
+      console.log('✅ Progresso salvo com sucesso');
+      return true;
+    } catch (error) {
+      console.error('❌ Erro ao salvar progresso:', error.message);
+      return false;
+    }
+  };
+
+  window.getProgressFromFirebase = async (date = null) => {
+    try {
+      const user = auth.currentUser;
+      if (!user) return [];
+
+      let q;
+      if (date) {
+        q = query(
+          collection(db, 'users', user.uid, 'progress'),
+          where('date', '==', date)
+        );
+      } else {
+        q = query(
+          collection(db, 'users', user.uid, 'progress'),
+          orderBy('date', 'desc')
+        );
+      }
+
+      const querySnapshot = await getDocs(q);
+      const progress = [];
+      querySnapshot.forEach((doc) => {
+        progress.push({ id: doc.id, ...doc.data() });
+      });
+
+      console.log('✅ Progresso carregado:', progress.length);
+      return progress;
+    } catch (error) {
+      console.error('❌ Erro ao obter progresso:', error.message);
+      return [];
+    }
+  };
+
+  // ============================================================================
+  // MONITORAR ESTADO DE AUTENTICAÇÃO
+  // ============================================================================
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      console.log('✅ Usuário autenticado:', user.email);
+      
+      // Carregar dados do usuário
+      await loadUserProfile(user.uid);
+      
+      // Carregar refeições
+      const meals = await getMealsFromFirebase();
+      APP.meals = meals;
+      
+      // Carregar progresso
+      const progress = await getProgressFromFirebase();
+      APP.progress = progress;
+    } else {
+      console.log('❌ Usuário não autenticado');
+      APP.profile = {};
+      APP.meals = [];
+      APP.progress = [];
+    }
+  });
+
+  // Expor Firebase globalmente para debug
+  window.firebase = { auth, db };
+  window.APP = window.APP || {};
+</script>
+
 </body>
 </html>
