@@ -2428,22 +2428,23 @@
   </div>
 
 
+
+
+
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
   import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, OAuthProvider } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
   import { getFirestore, collection, addDoc, query, where, getDocs, doc, setDoc, getDoc, updateDoc, deleteDoc, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
 
-  // Configuração Firebase
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDN5Ek-lJ8_9qK0pL1mN2oP3qR4sT5uV6w",
-      authDomain: "vitalia-app-4cc06.firebaseapp.com",
-      projectId: "vitalia-app-4cc06",
-      storageBucket: "vitalia-app-4cc06.appspot.com",
-      messagingSenderId: "123456789012",
-      appId: "1:123456789012:web:abcdefghijklmnop"
-    };
-
+  // Configuração Firebase (vitalia-app)
+  const firebaseConfig = {
+    apiKey: "AIzaSyDN5Ek-lJ8_9qK0pL1mN2oP3qR4sT5uV6w",
+    authDomain: "vitalia-app-4cc06.firebaseapp.com",
+    projectId: "vitalia-app-4cc06",
+    storageBucket: "vitalia-app-4cc06.appspot.com",
+    messagingSenderId: "123456789012",
+    appId: "1:123456789012:web:abcdefghijklmnop"
+  };
   
   // Inicializar Firebase
   const app = initializeApp(firebaseConfig);
@@ -2453,6 +2454,8 @@
   // Provedores de Autenticação
   const googleProvider = new GoogleAuthProvider();
   const appleProvider = new OAuthProvider('apple.com');
+
+  console.log('✅ Firebase inicializado com sucesso!');
 
   // ============================================================================
   // AUTENTICAÇÃO COM FIREBASE
@@ -2464,21 +2467,21 @@
       console.log('✅ Login bem-sucedido:', result.user.email);
       
       // Carregar dados do usuário
-      await loadUserProfile(result.user.uid);
+      await window.loadUserProfile(result.user.uid);
       
       // Fazer login no app
-      currentUser = {
+      window.currentUser = {
         email: result.user.email,
         name: result.user.displayName || email.split('@')[0],
         uid: result.user.uid,
         method: 'firebase-email'
       };
       
-      loginSuccess();
+      window.loginSuccess();
       return result.user;
     } catch (error) {
       console.error('❌ Erro ao fazer login:', error.message);
-      showToast('Erro ao fazer login: ' + error.message, 'error');
+      if (window.showToast) window.showToast('Erro ao fazer login: ' + error.message, 'error');
       return null;
     }
   };
@@ -2508,18 +2511,18 @@
 
       console.log('✅ Cadastro bem-sucedido:', user.email);
       
-      currentUser = {
+      window.currentUser = {
         email: email,
         name: name,
         uid: user.uid,
         method: 'firebase-email'
       };
       
-      loginSuccess();
+      window.loginSuccess();
       return user;
     } catch (error) {
       console.error('❌ Erro ao fazer cadastro:', error.message);
-      showToast('Erro ao fazer cadastro: ' + error.message, 'error');
+      if (window.showToast) window.showToast('Erro ao fazer cadastro: ' + error.message, 'error');
       return null;
     }
   };
@@ -2532,7 +2535,6 @@
       // Verificar se é novo usuário
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       if (!userDoc.exists()) {
-        // Criar perfil para novo usuário
         await setDoc(doc(db, 'users', user.uid), {
           uid: user.uid,
           email: user.email,
@@ -2554,18 +2556,18 @@
 
       console.log('✅ Login com Google bem-sucedido:', user.email);
       
-      currentUser = {
+      window.currentUser = {
         email: user.email,
         name: user.displayName,
         uid: user.uid,
         method: 'google'
       };
       
-      loginSuccess();
+      window.loginSuccess();
       return user;
     } catch (error) {
       console.error('❌ Erro ao fazer login com Google:', error.message);
-      showToast('Erro ao fazer login com Google', 'error');
+      if (window.showToast) window.showToast('Erro ao fazer login com Google', 'error');
       return null;
     }
   };
@@ -2575,7 +2577,6 @@
       const result = await signInWithPopup(auth, appleProvider);
       const user = result.user;
       
-      // Verificar se é novo usuário
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       if (!userDoc.exists()) {
         await setDoc(doc(db, 'users', user.uid), {
@@ -2598,18 +2599,18 @@
 
       console.log('✅ Login com Apple bem-sucedido:', user.email);
       
-      currentUser = {
+      window.currentUser = {
         email: user.email,
         name: user.displayName || 'Usuário',
         uid: user.uid,
         method: 'apple'
       };
       
-      loginSuccess();
+      window.loginSuccess();
       return user;
     } catch (error) {
       console.error('❌ Erro ao fazer login com Apple:', error.message);
-      showToast('Erro ao fazer login com Apple', 'error');
+      if (window.showToast) window.showToast('Erro ao fazer login com Apple', 'error');
       return null;
     }
   };
@@ -2618,7 +2619,7 @@
     try {
       await signOut(auth);
       console.log('✅ Logout bem-sucedido');
-      currentUser = null;
+      window.currentUser = null;
       return true;
     } catch (error) {
       console.error('❌ Erro ao fazer logout:', error.message);
@@ -2635,8 +2636,8 @@
       const userDoc = await getDoc(doc(db, 'users', uid));
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        APP.profile = userData.profile || {};
-        console.log('✅ Perfil carregado:', APP.profile);
+        if (window.APP) window.APP.profile = userData.profile || {};
+        console.log('✅ Perfil carregado:', userData);
         return userData;
       }
     } catch (error) {
@@ -2648,7 +2649,7 @@
     try {
       const user = auth.currentUser;
       if (!user) {
-        showToast('Você precisa estar logado', 'error');
+        if (window.showToast) window.showToast('Você precisa estar logado', 'error');
         return false;
       }
 
@@ -2657,13 +2658,13 @@
         'updatedAt': new Date().toISOString()
       });
 
-      APP.profile = profileData;
+      if (window.APP) window.APP.profile = profileData;
       console.log('✅ Perfil atualizado');
-      showToast('Perfil atualizado com sucesso!', 'success');
+      if (window.showToast) window.showToast('Perfil atualizado com sucesso!', 'success');
       return true;
     } catch (error) {
       console.error('❌ Erro ao atualizar perfil:', error.message);
-      showToast('Erro ao atualizar perfil', 'error');
+      if (window.showToast) window.showToast('Erro ao atualizar perfil', 'error');
       return false;
     }
   };
@@ -2676,7 +2677,7 @@
     try {
       const user = auth.currentUser;
       if (!user) {
-        showToast('Você precisa estar logado', 'error');
+        if (window.showToast) window.showToast('Você precisa estar logado', 'error');
         return false;
       }
 
@@ -2687,11 +2688,11 @@
       });
 
       console.log('✅ Refeição salva com sucesso');
-      showToast('Refeição salva com sucesso!', 'success');
+      if (window.showToast) window.showToast('Refeição salva com sucesso!', 'success');
       return true;
     } catch (error) {
       console.error('❌ Erro ao salvar refeição:', error.message);
-      showToast('Erro ao salvar refeição', 'error');
+      if (window.showToast) window.showToast('Erro ao salvar refeição', 'error');
       return false;
     }
   };
@@ -2733,17 +2734,17 @@
     try {
       const user = auth.currentUser;
       if (!user) {
-        showToast('Você precisa estar logado', 'error');
+        if (window.showToast) window.showToast('Você precisa estar logado', 'error');
         return false;
       }
 
       await deleteDoc(doc(db, 'users', user.uid, 'meals', mealId));
       console.log('✅ Refeição deletada');
-      showToast('Refeição removida!', 'success');
+      if (window.showToast) window.showToast('Refeição removida!', 'success');
       return true;
     } catch (error) {
       console.error('❌ Erro ao deletar refeição:', error.message);
-      showToast('Erro ao deletar refeição', 'error');
+      if (window.showToast) window.showToast('Erro ao deletar refeição', 'error');
       return false;
     }
   };
@@ -2756,7 +2757,7 @@
     try {
       const user = auth.currentUser;
       if (!user) {
-        showToast('Você precisa estar logado', 'error');
+        if (window.showToast) window.showToast('Você precisa estar logado', 'error');
         return false;
       }
 
@@ -2815,26 +2816,29 @@
       console.log('✅ Usuário autenticado:', user.email);
       
       // Carregar dados do usuário
-      await loadUserProfile(user.uid);
+      await window.loadUserProfile(user.uid);
       
       // Carregar refeições
-      const meals = await getMealsFromFirebase();
-      APP.meals = meals;
+      const meals = await window.getMealsFromFirebase();
+      if (window.APP) window.APP.meals = meals;
       
       // Carregar progresso
-      const progress = await getProgressFromFirebase();
-      APP.progress = progress;
+      const progress = await window.getProgressFromFirebase();
+      if (window.APP) window.APP.progress = progress;
     } else {
       console.log('❌ Usuário não autenticado');
-      APP.profile = {};
-      APP.meals = [];
-      APP.progress = [];
+      if (window.APP) {
+        window.APP.profile = {};
+        window.APP.meals = [];
+        window.APP.progress = [];
+      }
     }
   });
 
   // Expor Firebase globalmente para debug
   window.firebase = { auth, db };
-  window.APP = window.APP || {};
+  if (!window.APP) window.APP = {};
+  window.APP.firebase = { auth, db };
 </script>
 
 </body>
