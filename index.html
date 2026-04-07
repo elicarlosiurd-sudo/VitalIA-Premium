@@ -2843,3 +2843,146 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitalIA Premium - Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-dark: #0a1a0f;
+            --bg-darker: #0f2a1a;
+            --green-neon: #00ff88;
+            --green-light: #6aff9a;
+            --text-light: #e0ffe8;
+            --text-muted: #4a7a5a;
+            --border-color: rgba(0, 255, 136, 0.2);
+        }
+        body { background: var(--bg-dark); color: var(--text-light); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .container { max-width: 480px; margin: 0 auto; background: var(--bg-dark); min-height: 100vh; }
+        .header { display: flex; justify-content: space-between; padding: 16px 20px; }
+        .greeting { color: var(--green-light); font-size: 13px; }
+        .user-name { color: var(--text-light); font-size: 22px; font-weight: 700; }
+        .badge { border-radius: 20px; padding: 5px 10px; border: 1px solid; font-size: 12px; font-weight: 700; }
+        .xp-badge { background: rgba(0,255,136,0.1); border-color: rgba(0,255,136,0.2); color: var(--green-neon); }
+        .streak-badge { background: rgba(255,140,0,0.15); border-color: rgba(255,140,0,0.3); color: #ffaa44; }
+        .scroll-content { padding: 0 16px 80px; }
+        .score-card { background: var(--bg-darker); border-radius: 20px; padding: 20px; border: 1px solid var(--border-color); margin: 8px 0; position: relative; }
+        .score-value { color: var(--green-neon); font-size: 48px; font-weight: 800; }
+        .score-stats { display: flex; justify-content: space-around; margin-top: 16px; }
+        .score-stat { text-align: center; }
+        .score-stat-val { color: var(--text-light); font-size: 18px; font-weight: 700; }
+        .score-stat-lbl { color: var(--text-muted); font-size: 11px; }
+        .section { margin: 24px 0; }
+        .section-title { color: var(--text-light); font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+        .water-card { background: var(--bg-darker); border-radius: 16px; padding: 16px; border: 1px solid var(--border-color); }
+        .water-glasses { display: flex; gap: 8px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
+        .water-glass { font-size: 28px; cursor: pointer; }
+        .water-btns { display: flex; gap: 8px; margin-top: 12px; }
+        .water-btn { flex: 1; padding: 10px; background: rgba(0,255,136,0.1); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-light); cursor: pointer; }
+        .water-btn.add { background: var(--green-neon); color: var(--bg-dark); font-weight: 600; }
+        .mood-row { display: flex; justify-content: space-around; gap: 8px; }
+        .mood-btn { width: 50px; height: 50px; border-radius: 12px; background: rgba(0,255,136,0.1); border: 2px solid transparent; font-size: 24px; cursor: pointer; }
+        .mood-btn.active { border-color: var(--green-neon); background: rgba(0,255,136,0.3); }
+        .quick-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .quick-card { background: var(--bg-darker); border-radius: 14px; padding: 16px; border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; text-decoration: none; color: inherit; }
+        .quick-emoji { font-size: 28px; }
+        .quick-label { color: var(--text-light); font-size: 12px; font-weight: 600; text-align: center; }
+        .meal-row { background: var(--bg-darker); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; border: 1px solid var(--border-color); }
+        .meal-emoji { font-size: 24px; }
+        .meal-info { flex: 1; }
+        .meal-name { color: var(--text-light); font-size: 14px; font-weight: 600; }
+        .meal-macros { color: var(--text-muted); font-size: 12px; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; height: 60px; background: var(--bg-darker); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; text-decoration: none; color: var(--text-muted); font-size: 10px; }
+        .nav-item.active { color: var(--green-neon); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <div class="greeting">Bom dia,</div>
+                <div class="user-name">Usuário 👋</div>
+            </div>
+            <div>
+                <div class="badge xp-badge">⚡ 1250 XP</div>
+                <div class="badge streak-badge" style="margin-top: 4px;">🔥 7</div>
+            </div>
+        </div>
+
+        <div class="scroll-content">
+            <div class="score-card">
+                <div>Pontuação de hoje</div>
+                <div class="score-value">85 <span style="font-size: 24px; color: var(--text-muted);">/100</span></div>
+                <div class="score-stats">
+                    <div class="score-stat"><div class="score-stat-val">1850</div><div class="score-stat-lbl">kcal</div></div>
+                    <div class="score-stat"><div class="score-stat-val">85g</div><div class="score-stat-lbl">Proteína</div></div>
+                    <div class="score-stat"><div class="score-stat-val">6/8</div><div class="score-stat-lbl">Água</div></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">💧 Hidratação</div>
+                <div class="water-card">
+                    <div class="water-glasses">
+                        <div class="water-glass">💧</div>
+                        <div class="water-glass">💧</div>
+                        <div class="water-glass">💧</div>
+                        <div class="water-glass">💧</div>
+                        <div class="water-glass">💧</div>
+                        <div class="water-glass">💧</div>
+                        <div class="water-glass">🫙</div>
+                        <div class="water-glass">🫙</div>
+                    </div>
+                    <div style="text-align: center; color: var(--text-muted); font-size: 12px;">6 de 8 copos</div>
+                    <div class="water-btns">
+                        <button class="water-btn">−</button>
+                        <button class="water-btn add">+ Adicionar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">😊 Como você está?</div>
+                <div class="mood-row">
+                    <button class="mood-btn">😞</button>
+                    <button class="mood-btn">😕</button>
+                    <button class="mood-btn">😐</button>
+                    <button class="mood-btn">🙂</button>
+                    <button class="mood-btn active">😄</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">⚡ Ações Rápidas</div>
+                <div class="quick-grid">
+                    <a href="#" class="quick-card"><div class="quick-emoji">🍽️</div><div class="quick-label">Registrar</div></a>
+                    <a href="#" class="quick-card"><div class="quick-emoji">⏱️</div><div class="quick-label">Jejum</div></a>
+                    <a href="#" class="quick-card"><div class="quick-emoji">🤖</div><div class="quick-label">Coach</div></a>
+                    <a href="#" class="quick-card"><div class="quick-emoji">📖</div><div class="quick-label">Receitas</div></a>
+                    <a href="#" class="quick-card"><div class="quick-emoji">📱</div><div class="quick-label">Scanner</div></a>
+                    <a href="#" class="quick-card"><div class="quick-emoji">📊</div><div class="quick-label">Progresso</div></a>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">🍽️ Refeições de Hoje</div>
+                <div class="meal-row"><div class="meal-emoji">🌅</div><div class="meal-info"><div class="meal-name">Café - Ovos com Pão</div><div class="meal-macros">420 kcal · 15g Proteína</div></div></div>
+                <div class="meal-row"><div class="meal-emoji">☀️</div><div class="meal-info"><div class="meal-name">Almoço - Frango com Arroz</div><div class="meal-macros">850 kcal · 45g Proteína</div></div></div>
+                <div class="meal-row"><div class="meal-emoji">🌙</div><div class="meal-info"><div class="meal-name">Jantar - Salmão com Legumes</div><div class="meal-macros">580 kcal · 35g Proteína</div></div></div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <a href="#" class="nav-item active" style="padding-top: 8px;"><div style="font-size: 20px;">🏠</div>Início</a>
+            <a href="#" class="nav-item" style="padding-top: 8px;"><div style="font-size: 20px;">🥗</div>Nutrição</a>
+            <a href="#" class="nav-item" style="padding-top: 8px;"><div style="font-size: 20px;">🤖</div>Coach</a>
+            <a href="#" class="nav-item" style="padding-top: 8px;"><div style="font-size: 20px;">📱</div>Scanner</a>
+            <a href="#" class="nav-item" style="padding-top: 8px;"><div style="font-size: 20px;">📈</div>Progresso</a>
+        </div>
+    </div>
+</body>
+</html>
