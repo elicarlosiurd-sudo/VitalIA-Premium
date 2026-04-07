@@ -1018,6 +1018,106 @@
       transition: all 0.2s;
     }
 
+    /* NEW AUTH FORM CARD STYLES */
+    .auth-form-card {
+      background: rgba(15, 42, 26, 0.6);
+      border: 1px solid rgba(0, 255, 136, 0.2);
+      border-radius: 16px;
+      padding: 24px;
+      width: 100%;
+      max-width: 320px;
+      margin-bottom: 24px;
+    }
+
+    .auth-form-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #00ff88;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .form-field {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #00ff88;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .forgot-password {
+      text-align: right;
+      margin-bottom: 16px;
+      margin-top: -8px;
+    }
+
+    .forgot-password a {
+      font-size: 12px;
+      color: rgba(224, 255, 232, 0.6);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .forgot-password a:hover {
+      color: #00ff88;
+    }
+
+    .btn-login {
+      width: 100%;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+      color: #0a1a0f;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 255, 136, 0.3);
+    }
+
+    .btn-login:active {
+      transform: translateY(0);
+    }
+
+    .btn-demo {
+      width: 100%;
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      color: #00ff88;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-demo:hover {
+      background: rgba(0, 255, 136, 0.2);
+      border-color: rgba(0, 255, 136, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-demo:active {
+      transform: translateY(0);
+    }
+
     .auth-footer a:hover {
       color: #00ff88;
       text-decoration: underline;
@@ -1083,38 +1183,43 @@
         </div>
 
         <!-- LOGO AND TITLE -->
-        <div class="auth-logo">🧬</div>
+        <div class="auth-logo">🌿</div>
         <div class="auth-title">VitalIA</div>
         <div class="auth-subtitle" id="auth-subtitle-text">Saúde com Inteligência</div>
 
-        <!-- LOGIN FORM -->
-        <div class="auth-form">
-          <input type="email" id="auth-email" class="auth-input" placeholder="Email" autocomplete="email">
-          <input type="password" id="auth-password" class="auth-input" placeholder="Senha" autocomplete="current-password">
+        <!-- LOGIN FORM CARD -->
+        <div class="auth-form-card">
+          <div class="auth-form-title" id="auth-form-title">Acessar sua conta</div>
           
-          <div class="remember-me">
-            <input type="checkbox" id="remember-login">
-            <label for="remember-login" id="remember-label">Lembrar-me</label>
-          </div>
+          <div class="auth-form">
+            <div class="form-field">
+              <label class="form-label" id="email-label">E-MAIL</label>
+              <input type="email" id="auth-email" class="auth-input" placeholder="seu@email.com" autocomplete="email">
+            </div>
+            
+            <div class="form-field">
+              <label class="form-label" id="password-label">SENHA</label>
+              <input type="password" id="auth-password" class="auth-input" placeholder="Mínimo 8 caracteres" autocomplete="current-password">
+            </div>
+            
+            <div class="forgot-password">
+              <a href="#" id="forgot-link">Esqueci minha senha</a>
+            </div>
 
-          <button class="btn" onclick="loginWithEmail()" id="login-btn">Entrar</button>
+            <button class="btn-login" onclick="loginWithEmail()" id="login-btn">Acessar minha conta</button>
 
-          <!-- BIOMETRIC LOGIN -->
-          <div class="auth-divider" id="biometric-divider">ou</div>
-          <button class="biometric-btn" onclick="loginWithBiometric()" id="biometric-btn">👆 Acesso por Biometria</button>
-
-          <!-- SOCIAL LOGINS -->
-          <div class="auth-divider" id="social-divider">Conectar com</div>
-          <div class="social-buttons">
-            <button class="social-btn" onclick="socialLogin('google')" id="google-btn">🔵 Google</button>
-            <button class="social-btn" onclick="socialLogin('apple')" id="apple-btn">⚫ Apple</button>
-            <button class="social-btn" onclick="socialLogin('telegram')" id="telegram-btn">🔵 Telegram</button>
+            <div class="auth-divider" id="continue-divider">ou continuar com</div>
+            
+            <button class="btn-demo" onclick="loginAsDemo()" id="demo-btn">🚀 Entrar em modo demonstração</button>
           </div>
         </div>
 
+        <!-- BIOMETRIC LOGIN (Hidden for now) -->
+        <button class="biometric-btn" onclick="loginWithBiometric()" id="biometric-btn" style="display:none;">👆 Acesso por Biometria</button>
+
         <!-- SIGNUP LINK -->
         <div class="auth-footer">
-          <p id="signup-text">Sem conta? <a onclick="showSignupForm()">Criar conta grátis</a></p>
+          <p id="signup-text">Não tem conta? <a onclick="showSignupForm()" id="signup-link">Criar conta grátis</a></p>
         </div>
 
         <div style="margin-top: 24px; font-size: 11px; color: rgba(224, 255, 232, 0.3);">
