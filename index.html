@@ -1535,7 +1535,7 @@
     function loginWithEmail() {
       const email = document.getElementById('auth-email').value;
       const password = document.getElementById('auth-password').value;
-      const rememberMe = document.getElementById('remember-login').checked;
+      const rememberMe = false;
 
       if (!email || !password) {
         alert('Preencha email e senha');
