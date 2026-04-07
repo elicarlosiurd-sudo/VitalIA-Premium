@@ -1171,9 +1171,8 @@
     <!-- AUTH SCREEN (LANDING PAGE) -->
     <div id="auth-screen" class="screen active">
       <div class="auth-screen-container">
-        <!-- LANGUAGE SELECTOR -->
-        <div class="auth-header">
-          <div></div>
+        <!-- LANGUAGE SELECTOR - TOP RIGHT -->
+        <div class="auth-header" style="position: absolute; top: 20px; right: 20px; width: auto; margin-bottom: 0;">
           <select class="auth-lang-selector" onchange="setAuthLanguage(this.value)" id="auth-lang-select">
             <option value="pt">🇧🇷 Português</option>
             <option value="en">🇺🇸 English</option>
@@ -1210,7 +1209,7 @@
 
             <div class="auth-divider" id="continue-divider">ou continuar com</div>
             
-            <button class="btn-demo" onclick="openBiometricModal()" id="biometric-btn-main">👆 Entrar com Biometria</button>
+            <button class="btn-demo" onclick="openBiometricModal()" id="biometric-btn-main">🚀 Entrar em modo demonstração</button>
           </div>
         </div>
 
@@ -2394,11 +2393,11 @@
         <div style="font-size: 48px; margin-bottom: 16px;">👆</div>
         <p style="color: #e0ffe8; margin-bottom: 20px;">Escolha seu método de autenticação:</p>
         
-        <button class="btn" onclick="activateBiometric()" style="margin-bottom: 12px; width: 100%;">
+        <button class="btn" onclick="tryBiometric()" style="margin-bottom: 12px; width: 100%;">
           👆 Usar Impressão Digital
         </button>
         
-        <button class="btn btn-secondary" onclick="activatePIN()" style="width: 100%;">
+        <button class="btn btn-secondary" onclick="tryPIN()" style="width: 100%;">
           🔐 Usar PIN
         </button>
       </div>
@@ -2417,11 +2416,11 @@
         <div style="font-size: 48px; margin-bottom: 16px;">👆</div>
         <p style="color: #e0ffe8; margin-bottom: 20px;">Escolha seu método de autenticação:</p>
         
-        <button class="btn" onclick="activateBiometric()" style="margin-bottom: 12px; width: 100%;">
+        <button class="btn" onclick="tryBiometric()" style="margin-bottom: 12px; width: 100%;">
           👆 Usar Impressão Digital
         </button>
         
-        <button class="btn btn-secondary" onclick="activatePIN()" style="width: 100%;">
+        <button class="btn btn-secondary" onclick="tryPIN()" style="width: 100%;">
           🔐 Usar PIN
         </button>
       </div>
