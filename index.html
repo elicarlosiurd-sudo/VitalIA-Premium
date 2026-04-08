@@ -818,16 +818,91 @@ try {
 
 // ── Auth helpers ──────────────────────
 async function sbSignUp(email, password, nome) {
-  const { data, error } = await sb.auth.signUp({
-    email, password,
-    options: { data: { nome } }
-  });
-  return { data, error };
+  try {
+    // Tentar Supabase primeiro
+    if (sb && sb.auth && sb.auth.signUp) {
+      const { data, error } = await sb.auth.signUp({
+        email, password,
+        options: { data: { nome } }
+      });
+      if (!error) return { data, error };
+    }
+  } catch (e) {
+    console.log('Supabase indisponivel, usando localStorage');
+  }
+  
+  // Fallback: localStorage
+  const users = JSON.parse(localStorage.getItem('v_users') || '{}');
+  
+  // Verificar se email ja existe
+  if (users[email]) {
+    return { 
+      data: null, 
+      error: { message: 'Email ja registrado' } 
+    };
+  }
+  
+  // Criar novo usuario
+  const userId = 'user_' + Date.now();
+  const hashedPassword = btoa(password); // Simple encoding (not secure - for demo)
+  
+  users[email] = {
+    id: userId,
+    email: email,
+    password: hashedPassword,
+    nome: nome,
+    criado_em: new Date().toISOString()
+  };
+  
+  localStorage.setItem('v_users', JSON.stringify(users));
+  
+  return {
+    data: {
+      user: { id: userId, email: email },
+      session: { access_token: 'session_' + userId }
+    },
+    error: null
+  };
 }
 
 async function sbSignIn(email, password) {
-  const { data, error } = await sb.auth.signInWithPassword({ email, password });
-  return { data, error };
+  try {
+    // Tentar Supabase primeiro
+    if (sb && sb.auth && sb.auth.signInWithPassword) {
+      const { data, error } = await sb.auth.signInWithPassword({ email, password });
+      if (!error) return { data, error };
+    }
+  } catch (e) {
+    console.log('Supabase indisponivel, usando localStorage');
+  }
+  
+  // Fallback: localStorage
+  const users = JSON.parse(localStorage.getItem('v_users') || '{}');
+  
+  if (!users[email]) {
+    return { 
+      data: null, 
+      error: { message: 'Email ou senha incorretos' } 
+    };
+  }
+  
+  const user = users[email];
+  const hashedPassword = btoa(password);
+  
+  if (user.password !== hashedPassword) {
+    return { 
+      data: null, 
+      error: { message: 'Email ou senha incorretos' } 
+    };
+  }
+  
+  return {
+    data: {
+      user: { id: user.id, email: user.email },
+      session: { access_token: 'session_' + user.id }
+    },
+    error: null
+  };
 }
 
 async function sbSignOut() {
