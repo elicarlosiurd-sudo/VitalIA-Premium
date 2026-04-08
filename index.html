@@ -2681,9 +2681,12 @@ async function tryBiometric() {
       const assertion = await navigator.credentials.get({
         publicKey: {
           challenge,
-          rpId: window.location.hostname,  // Força o hostname exato
-          userVerification: 'required',    // Força digital/PIN do sistema
-          timeout: 60000
+          rpId: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? window.location.hostname
+            : 'vital-ia-premium.vercel.app',
+          userVerification: 'required',
+          timeout: 60000,
+          hints: ['security-key', 'client-device']
         }
       });
 
@@ -2757,7 +2760,9 @@ async function activateBiometric() {
           challenge,
           rp: { 
             name: 'VitalIA',
-            id: window.location.hostname // Força o hostname exato
+            id: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+              ? window.location.hostname
+              : 'vital-ia-premium.vercel.app'
           },
           user: { 
             id: userId, 
@@ -2772,7 +2777,8 @@ async function activateBiometric() {
             authenticatorAttachment: 'platform',  // Força celular atual
             residentKey: 'required',              // OBRIGATÓRIO: Aciona Google Password Manager
             requireResidentKey: true,             // Compatibilidade
-            userVerification: 'required'          // Força digital/PIN do sistema
+            userVerification: 'required',         // Força digital/PIN do sistema
+            hints: ['security-key', 'client-device']  // Prioriza cliente
           },
           timeout: 60000,
           attestation: 'direct'
