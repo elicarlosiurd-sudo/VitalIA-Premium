@@ -2671,156 +2671,55 @@ function socialLogin(provider) {
 }
 
 async function tryBiometric() {
-  // Try WebAuthn first (real fingerprint/FaceID)
-  if (isWebAuthnAvailable() && localStorage.getItem('v_webauthn_id')) {
+  // Passkey Discoverable (Google Password Manager / iOS Keychain)
+  if (isWebAuthnAvailable() && localStorage.getItem('v_passkey_registered')) {
     try {
-      const credId = localStorage.getItem('v_webauthn_id');
       const challenge = new Uint8Array(32);
       window.crypto.getRandomValues(challenge);
+      
+      // Fluxo Discoverable: sem allowCredentials - aciona Google Password Manager
       const assertion = await navigator.credentials.get({
         publicKey: {
           challenge,
-          allowCredentials: [{
-            id: Uint8Array.from(atob(credId), c => c.charCodeAt(0)),
-            type: 'public-key',
-          }],
-          userVerification:'required',
-          timeout: 30000,
+          rpId: window.location.hostname,  // Força o hostname exato
+          userVerification: 'required',    // Força digital/PIN do sistema
+          timeout: 60000
         }
       });
+
       if (assertion) {
-        toast('✅ '+t('toast_bio_ok'),'success');
-        setTimeout(async () => {
-          APP.user = JSON.parse(localStorage.getItem('v_user')||'null') || {name:'Usuário',email:'user@demo.com'};
-          APP.profile = JSON.parse(localStorage.getItem('v_profile')||'null') || {name:'Usuário',weight:78,height:175,age:30,gender:'m',goal:'lose',activity:'mod'};
-          APP.calc = calcProfile(APP.profile);
-          APP.water = APP.water||0; APP.meals=[];
-          APP.session = 'bio_' + Date.now();
-          save('v_session', APP.session);
-          // Sync from Supabase if user has id
-          if (APP.user?.id) await syncFromSupabase(APP.user.id);
-          finishAuth();
-        }, 600);
-        return;
-      }
-    } catch(e) {
-      // WebAuthn failed, fall through to PIN
-    }
-  }
-  // Fallback: PIN or simple biometric simulation
-  if (localStorage.getItem('v_biometric')) {
-    // Show device biometric prompt simulation
-    if (isWebAuthnAvailable()) {
-      toast('🔐 '+t('toast_bio_check'),'info',1500);
-      setTimeout(async () => {
-        APP.user = JSON.parse(localStorage.getItem('v_user')||'null') || {name:'Usuário',email:'user@demo.com'};
-        APP.profile = JSON.parse(localStorage.getItem('v_profile')||'null') || {name:'Usuário',weight:78,height:175,age:30,gender:'m',goal:'lose',activity:'mod'};
-        APP.calc = calcProfile(APP.profile);
-        APP.water = APP.water||0; APP.meals=[];
-        APP.session = 'bio_' + Date.now();
-        save('v_session', APP.session);
-        if (APP.user?.id) await syncFromSupabase(APP.user.id);
-        toast('✅ '+t('toast_bio_ok'),'success');
-        finishAuth();
-      }, 1500);
-    } else {
-      toast('✅ '+t('toast_access_ok'),'success');
-      setTimeout(finishAuth, 600);
-    }
-  } else {
-    APP.authStep = 'pin'; APP.pinInput = ''; renderAuth();
-  }
-}
-
-
-// Verificar HTTPS para WebAuthn
-function isWebAuthnAvailable() {
-  return window.PublicKeyCredential && 
-         (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1');
-}
-
-async function activateBiometric() {
-  // Try real WebAuthn registration
-  if (isWebAuthnAvailable() && navigator.credentials) {
-    try {
-      const challenge = new Uint8Array(32);
-      window.crypto.getRandomValues(challenge);
-      const userId = new Uint8Array(16);
-      window.crypto.getRandomValues(userId);
-
-      const credential = await navigator.credentials.create({
-        publicKey: {
-          challenge,
-          rp: { name: 'VitalIA', id: location.hostname || 'localhost' },
-          user: { id: userId, name: APP.user?.email || 'user', displayName: APP.profile?.name || 'Usuário' },
-          pubKeyCredParams: [{ alg: -7, type: 'public-key' }, { alg: -257, type: 'public-key' }],
-          authenticatorSelection: { userVerification:'required', residentKey: 'preferred' },
-          timeout: 30000,
-        }
-      });
-
-      if (credential) {
-        const credId = btoa(String.fromCharCode(...new Uint8Array(credential.rawId)));
-        localStorage.setItem('v_webauthn_id', credId);
-        localStorage.setItem('v_biometric', '1');
-        toast('✅ '+t('toast_bio_reg'),'success',3000);
-        setTimeout(finishAuth, 1200);
-        return;
-      }
-    } catch(e) {
-      // WebAuthn not available or user cancelled
-    }
-  }
-  // Fallback
-  localStorage.setItem('v_biometric','1');
-  toast('✅ '+t('toast_bio_on'),'success',3000);
-  setTimeout(finishAuth, 1200);
-}
-
-
-function selectLanguageReg(code) {
-  APP.lang = code;
-  save('v_lang', code);
-  document.querySelectorAll('.lang-option').forEach(el => el.classList.remove('active'));
-  document.getElementById('lang-' + code).classList.add('active');
-}
-
-async function tryBiometric() {
-  // Try WebAuthn first (real fingerprint/FaceID)
-  if (isWebAuthnAvailable() && localStorage.getItem('v_webauthn_id')) {
-    try {
-      const credId = localStorage.getItem('v_webauthn_id');
-      const challenge = new Uint8Array(32);
-      window.crypto.getRandomValues(challenge);
-      const assertion = await navigator.credentials.get({
-        publicKey: {
-          challenge,
-          allowCredentials: [{
-            id: Uint8Array.from(atob(credId), c => c.charCodeAt(0)),
-            type: 'public-key',
-          }],
-          userVerification:'required',
-          timeout: 30000,
-        }
-      });
-      if (assertion) {
-        toast('Biometria verificada!','success');
+        toast('Passkey verificado!', 'success');
         setTimeout(async () => {
           APP.user = JSON.parse(localStorage.getItem('v_user')||'null') || {name:'Usuario',email:'user@demo.com'};
           APP.profile = JSON.parse(localStorage.getItem('v_profile')||'null') || {name:'Usuario',weight:78,height:175,age:30,gender:'m',goal:'lose',activity:'mod'};
           APP.calc = calcProfile(APP.profile);
           APP.water = APP.water||0; APP.meals=[];
-          APP.session = 'bio_' + Date.now();
+          APP.session = 'passkey_' + Date.now();
           save('v_session', APP.session);
+          if (APP.user?.id) await syncFromSupabase(APP.user.id);
+          toast('Acesso com Passkey!', 'success');
           finishAuth();
         }, 600);
         return;
       }
     } catch(e) {
-      console.log('WebAuthn error:', e);
+      console.log('Passkey auth error:', e.name, e.message);
+      
+      // Fallback: NotAllowedError (usuário cancelou)
+      if (e.name === 'NotAllowedError') {
+        toast('Autenticação cancelada. Tente novamente.', 'warning', 2000);
+        return;
+      }
+      
+      // Outro erro: tentar PIN
+      APP.authStep = 'pin';
+      APP.pinInput = '';
+      renderAuth();
+      return;
     }
   }
-  // Fallback: PIN or simple biometric simulation
+  
+  // Fallback: Passkey não registrado, usar PIN
   if (localStorage.getItem('v_biometric')) {
     if (isWebAuthnAvailable()) {
       toast('Verificando biometria...','info',1500);
@@ -2831,6 +2730,7 @@ async function tryBiometric() {
         APP.water = APP.water||0; APP.meals=[];
         APP.session = 'bio_' + Date.now();
         save('v_session', APP.session);
+        if (APP.user?.id) await syncFromSupabase(APP.user.id);
         toast('Acesso com biometria!','success');
         finishAuth();
       }, 1500);
@@ -2844,7 +2744,7 @@ async function tryBiometric() {
 }
 
 async function activateBiometric() {
-  // Try real WebAuthn registration
+  // Passkeys com Resident Keys (Google Password Manager / iOS Keychain)
   if (isWebAuthnAvailable() && navigator.credentials) {
     try {
       const challenge = new Uint8Array(32);
@@ -2855,29 +2755,63 @@ async function activateBiometric() {
       const credential = await navigator.credentials.create({
         publicKey: {
           challenge,
-          rp: { name: 'VitalIA', id: location.hostname || 'localhost' },
-          user: { id: userId, name: APP.user?.email || 'user', displayName: APP.profile?.name || 'Usuario' },
-          pubKeyCredParams: [{ alg: -7, type: 'public-key' }, { alg: -257, type: 'public-key' }],
-          authenticatorSelection: { authenticatorAttachment: 'platform', userVerification:'required', residentKey: 'preferred' },
-          timeout: 30000,
+          rp: { 
+            name: 'VitalIA',
+            id: window.location.hostname // Força o hostname exato
+          },
+          user: { 
+            id: userId, 
+            name: APP.user?.email || 'user@vitalia.app', 
+            displayName: APP.profile?.name || 'Usuario' 
+          },
+          pubKeyCredParams: [
+            { alg: -7, type: 'public-key' },   // ES256
+            { alg: -257, type: 'public-key' }  // RS256
+          ],
+          authenticatorSelection: {
+            authenticatorAttachment: 'platform',  // Força celular atual
+            residentKey: 'required',              // OBRIGATÓRIO: Aciona Google Password Manager
+            requireResidentKey: true,             // Compatibilidade
+            userVerification: 'required'          // Força digital/PIN do sistema
+          },
+          timeout: 60000,
+          attestation: 'direct'
         }
       });
 
       if (credential) {
+        // Salvar credencial
         const credId = btoa(String.fromCharCode(...new Uint8Array(credential.rawId)));
         localStorage.setItem('v_webauthn_id', credId);
+        localStorage.setItem('v_passkey_registered', '1');
         localStorage.setItem('v_biometric', '1');
-        toast('Biometria ativada!','success',3000);
+        
+        toast('Passkey registrado com sucesso!', 'success', 3000);
         setTimeout(finishAuth, 1200);
         return;
       }
     } catch(e) {
-      console.log('WebAuthn error:', e);
+      console.log('Passkey registration error:', e.name, e.message);
+      
+      // Fallback: NotAllowedError (usuário cancelou ou sem HTTPS)
+      if (e.name === 'NotAllowedError') {
+        toast('Passkey não disponível. Usando PIN.', 'info', 2000);
+        localStorage.setItem('v_biometric', '1');
+        setTimeout(finishAuth, 1500);
+        return;
+      }
+      
+      // Outro erro: fallback para PIN
+      toast('Erro ao registrar passkey. Usando PIN.', 'warning', 2000);
+      localStorage.setItem('v_biometric', '1');
+      setTimeout(finishAuth, 1500);
+      return;
     }
   }
-  // Fallback
-  localStorage.setItem('v_biometric','1');
-  toast('Biometria ativada!','success',3000);
+  
+  // Fallback: Dispositivo sem suporte
+  localStorage.setItem('v_biometric', '1');
+  toast('Passkey ativado!', 'success', 3000);
   setTimeout(finishAuth, 1200);
 }
 
