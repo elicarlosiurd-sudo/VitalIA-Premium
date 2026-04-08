@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="VitalIA Premium - Saúde com Inteligência">
+    <meta name="theme-color" content="#0a1a0f">
     <title>VitalIA Premium - Saúde com Inteligência</title>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
             margin: 0;
@@ -22,69 +23,71 @@
             --green-dark: #00cc6a;
             --text: #e0ffe8;
             --text-secondary: #a8d5ba;
-            --border: #1a3a2a;
-            --surface: #132a1f;
+            --border: #1a4d2e;
+            --surface: #1a3a2a;
             --gradient: linear-gradient(135deg, #0a1a0f 0%, #0f2a1a 100%);
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            --font-serif: Georgia, "Times New Roman", serif;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            overflow: hidden;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            overflow: hidden;
-            height: 100vh;
-        }
-
-        .container {
-            width: 100%;
-            height: 100vh;
             display: flex;
             flex-direction: column;
-            max-width: 480px;
-            margin: 0 auto;
-            background: var(--bg);
-            position: relative;
         }
 
-        /* ===== TELA DE LOGIN ===== */
+        .app-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* TELA DE LOGIN */
         #auth-screen {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
+            justify-content: center;
             padding: 20px;
             background: var(--gradient);
+            min-height: 100vh;
             position: relative;
-            overflow-y: auto;
         }
 
         .language-selector {
             position: absolute;
             top: 20px;
             right: 20px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--green);
-            border-radius: 20px;
-            padding: 8px 16px;
-            color: var(--green);
-            font-size: 14px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 1000;
-        }
-
-        .language-selector select {
             background: transparent;
-            border: none;
+            border: 2px solid var(--green);
             color: var(--green);
+            padding: 8px 16px;
+            border-radius: 20px;
             cursor: pointer;
             font-size: 14px;
+            font-weight: 600;
         }
 
-        .logo-section {
+        .auth-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .auth-header {
             text-align: center;
             margin-bottom: 40px;
         }
@@ -92,8 +95,8 @@
         .logo {
             width: 80px;
             height: 80px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 2px solid var(--green);
+            background: var(--bg);
+            border: 3px solid var(--green);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -102,32 +105,16 @@
             margin: 0 auto 20px;
         }
 
-        .logo-text {
-            font-size: 36px;
-            font-weight: bold;
+        .auth-header h1 {
+            font-size: 32px;
             color: var(--green);
             margin-bottom: 8px;
+            font-weight: 700;
         }
 
-        .logo-subtitle {
-            font-size: 14px;
+        .auth-header p {
             color: var(--text-secondary);
-        }
-
-        .auth-card {
-            background: rgba(19, 42, 31, 0.8);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 30px;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .auth-card h2 {
-            font-size: 20px;
-            margin-bottom: 25px;
-            text-align: center;
-            color: var(--text);
+            font-size: 14px;
         }
 
         .form-group {
@@ -136,18 +123,18 @@
 
         .form-group label {
             display: block;
-            font-size: 12px;
-            font-weight: 600;
             color: var(--green);
+            font-size: 12px;
+            font-weight: 700;
             margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         .form-group input {
             width: 100%;
-            padding: 12px 16px;
-            background: var(--surface);
+            padding: 14px 16px;
+            background: var(--bg);
             border: 1.5px solid var(--border);
             border-radius: 12px;
             color: var(--text);
@@ -161,119 +148,122 @@
             box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
         }
 
-        .form-group input::placeholder {
-            color: var(--text-secondary);
-        }
-
         .forgot-password {
             text-align: right;
             margin-bottom: 20px;
         }
 
         .forgot-password a {
-            color: var(--green);
+            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 13px;
-            transition: opacity 0.3s;
+            font-size: 12px;
+            transition: color 0.3s ease;
         }
 
         .forgot-password a:hover {
-            opacity: 0.8;
+            color: var(--green);
         }
 
-        .btn-primary {
+        .btn {
             width: 100%;
-            padding: 14px;
-            background: var(--green);
-            color: var(--bg);
+            padding: 14px 20px;
             border: none;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+            color: var(--bg);
+            margin-bottom: 16px;
         }
 
         .btn-primary:hover {
-            background: var(--green-dark);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
         }
 
-        .btn-primary:active {
-            transform: translateY(0);
+        .btn-secondary {
+            background: transparent;
+            border: 1.5px solid var(--border);
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--green);
+            color: var(--green);
         }
 
         .divider {
             text-align: center;
             margin: 20px 0;
             color: var(--text-secondary);
-            font-size: 13px;
+            font-size: 12px;
         }
 
-        .divider::before,
-        .divider::after {
-            content: '';
-            display: inline-block;
-            width: 40%;
-            height: 1px;
-            background: var(--border);
-            vertical-align: middle;
-            margin: 0 8px;
+        .social-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
-        .btn-secondary {
-            width: 100%;
-            padding: 14px;
+        .social-buttons button {
+            padding: 12px;
+            border: 1.5px solid var(--border);
             background: transparent;
-            color: var(--green);
-            border: 1.5px solid var(--green);
+            color: var(--text);
             border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
             cursor: pointer;
+            font-size: 20px;
             transition: all 0.3s ease;
-            margin-bottom: 10px;
         }
 
-        .btn-secondary:hover {
+        .social-buttons button:hover {
+            border-color: var(--green);
             background: rgba(0, 255, 136, 0.1);
         }
 
-        .signup-link {
+        .auth-footer {
             text-align: center;
             margin-top: 20px;
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-secondary);
         }
 
-        .signup-link a {
+        .auth-footer a {
             color: var(--green);
             text-decoration: none;
             font-weight: 600;
         }
 
-        /* ===== DASHBOARD ===== */
+        /* DASHBOARD */
         #dashboard {
             display: none;
+            flex: 1;
             flex-direction: column;
-            height: 100vh;
-            background: var(--bg);
+            overflow: hidden;
         }
 
         .dashboard-header {
             background: var(--gradient);
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
+            padding: 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid var(--border);
         }
 
         .dashboard-header h1 {
             font-size: 24px;
             color: var(--green);
+            font-weight: 700;
         }
 
         .logout-btn {
@@ -283,8 +273,8 @@
             padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
+            font-size: 12px;
+            transition: all 0.3s ease;
         }
 
         .logout-btn:hover {
@@ -294,86 +284,78 @@
         .content {
             flex: 1;
             overflow-y: auto;
-            padding-bottom: 70px;
+            padding: 20px;
         }
 
         .screen {
             display: none;
-            padding: 20px;
-            animation: fadeIn 0.3s ease;
         }
 
         .screen.active {
             display: block;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ===== HOME SCREEN ===== */
+        /* HOME SCREEN */
         .greeting {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 20px;
             color: var(--text);
             margin-bottom: 20px;
+            font-weight: 600;
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .stat-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 20px;
+            padding: 16px;
             text-align: center;
         }
 
         .stat-value {
             font-size: 28px;
-            font-weight: bold;
             color: var(--green);
-            margin-bottom: 5px;
+            font-weight: 700;
+            margin-bottom: 4px;
         }
 
         .stat-label {
             font-size: 12px;
             color: var(--text-secondary);
             text-transform: uppercase;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 15px;
-            margin-top: 25px;
+            letter-spacing: 0.5px;
         }
 
         .quick-actions {
+            margin-bottom: 20px;
+        }
+
+        .quick-actions-title {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .actions-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 12px;
-            margin-bottom: 25px;
         }
 
         .action-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 16px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -387,195 +369,349 @@
 
         .action-icon {
             font-size: 32px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .action-label {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text);
-            font-weight: 500;
+            font-weight: 600;
         }
 
-        /* ===== HIDRATAÇÃO ===== */
-        .water-tracker {
-            text-align: center;
-            margin: 30px 0;
+        /* MEALS SECTION */
+        .meals-section {
+            margin-top: 20px;
         }
 
-        .water-bottle {
-            width: 80px;
-            height: 150px;
+        .meals-title {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .meal-item {
             background: var(--surface);
-            border: 2px solid var(--green);
-            border-radius: 20px;
-            margin: 0 auto 20px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .meal-info h4 {
+            font-size: 14px;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .meal-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .meal-calories {
+            font-size: 14px;
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        /* NUTRITION SCREEN */
+        .nutrition-input {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .nutrition-input input,
+        .nutrition-input select {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .nutrition-input input:focus,
+        .nutrition-input select:focus {
+            outline: none;
+            border-color: var(--green);
+        }
+
+        .btn-add-meal {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+            color: var(--bg);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add-meal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        /* COACH IA SCREEN */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: var(--bg);
+            border-radius: 12px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message.user {
+            background: var(--green);
+            color: var(--bg);
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.coach {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-input {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .chat-input input:focus {
+            outline: none;
+            border-color: var(--green);
+        }
+
+        .chat-input button {
+            padding: 12px 20px;
+            background: var(--green);
+            color: var(--bg);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            background: var(--green-dark);
+        }
+
+        /* SCANNER SCREEN */
+        #scanner-container {
+            width: 100%;
+            height: 300px;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 20px;
             position: relative;
             overflow: hidden;
         }
 
-        .water-level {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 60%;
-            background: var(--green);
-            opacity: 0.3;
-            transition: height 0.3s ease;
-        }
-
-        .water-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: bold;
-            color: var(--green);
-            z-index: 2;
-        }
-
-        .water-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .water-btn {
-            padding: 10px 20px;
+        .scanner-result {
             background: var(--surface);
-            border: 1px solid var(--green);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .scanner-result h3 {
             color: var(--green);
+            margin-bottom: 8px;
+        }
+
+        .scanner-result p {
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        /* RECIPES SCREEN */
+        .recipe-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .recipe-card:hover {
+            border-color: var(--green);
+            transform: translateY(-2px);
+        }
+
+        .recipe-title {
+            font-size: 16px;
+            color: var(--green);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .recipe-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .recipe-macros {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .macro {
+            text-align: center;
+        }
+
+        .macro-value {
+            color: var(--green);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .macro-label {
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        /* PROGRESS SCREEN */
+        .chart-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        /* HYDRATION SCREEN */
+        .water-tracker {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .water-cups {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .water-cup {
+            width: 100%;
+            aspect-ratio: 1;
+            background: var(--bg);
+            border: 2px solid var(--border);
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
         }
 
-        .water-btn:hover {
-            background: rgba(0, 255, 136, 0.1);
-        }
-
-        /* ===== JEJUM ===== */
-        .fasting-protocols {
-            display: grid;
-            gap: 12px;
-        }
-
-        .protocol-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .protocol-card:hover {
+        .water-cup.filled {
+            background: var(--green);
             border-color: var(--green);
-            background: rgba(0, 255, 136, 0.05);
+            color: var(--bg);
         }
 
-        .protocol-name {
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 5px;
-        }
-
-        .protocol-desc {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        /* ===== TREINO ===== */
-        .workout-list {
-            display: grid;
-            gap: 12px;
-        }
-
-        .workout-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .workout-info h3 {
-            color: var(--text);
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-
-        .workout-info p {
-            color: var(--text-secondary);
-            font-size: 12px;
-        }
-
-        .workout-duration {
-            color: var(--green);
-            font-weight: 600;
-        }
-
-        /* ===== CONFIGURAÇÕES ===== */
-        .settings-list {
-            display: grid;
-            gap: 12px;
-        }
-
-        .setting-item {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .setting-item:hover {
+        .water-cup:hover {
             border-color: var(--green);
         }
 
-        .setting-label {
-            color: var(--text);
-            font-size: 14px;
-        }
-
-        .setting-value {
-            color: var(--text-secondary);
-            font-size: 12px;
-        }
-
-        /* ===== BOTTOM NAV ===== */
+        /* BOTTOM NAVIGATION */
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0;
             background: var(--surface);
             border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            max-width: 480px;
-            margin: 0 auto;
-            width: 100%;
+            padding: 12px 0;
+            position: sticky;
+            bottom: 0;
         }
 
         .nav-item {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 8px;
             cursor: pointer;
+            border: none;
+            background: transparent;
             color: var(--text-secondary);
             font-size: 12px;
-            transition: all 0.3s;
-            border: none;
-            background: none;
+            transition: all 0.3s ease;
+            text-align: center;
         }
 
         .nav-item.active {
@@ -587,160 +723,155 @@
             margin-bottom: 4px;
         }
 
-        /* ===== MODAL ===== */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
+        .nav-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
+        /* SETTINGS SCREEN */
+        .settings-item {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 400px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .modal-title {
-            font-size: 20px;
-            font-weight: bold;
+        .settings-label {
             color: var(--text);
-            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 600;
         }
 
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 24px;
-            cursor: pointer;
+        .settings-value {
+            color: var(--green);
+            font-size: 12px;
         }
 
-        /* ===== TOAST ===== */
+        /* TOAST */
         .toast {
             position: fixed;
             bottom: 100px;
             left: 50%;
             transform: translateX(-50%);
             background: var(--surface);
-            border: 1px solid var(--border);
             color: var(--text);
-            padding: 16px 24px;
-            border-radius: 12px;
-            z-index: 3000;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            z-index: 1000;
             animation: slideUp 0.3s ease;
-            max-width: 90%;
+        }
+
+        .toast.success {
+            border-color: var(--green);
+            background: rgba(0, 255, 136, 0.1);
         }
 
         @keyframes slideUp {
             from {
-                transform: translateX(-50%) translateY(100px);
                 opacity: 0;
+                transform: translateX(-50%) translateY(20px);
             }
             to {
-                transform: translateX(-50%) translateY(0);
                 opacity: 1;
+                transform: translateX(-50%) translateY(0);
             }
         }
 
-        /* ===== RESPONSIVIDADE ===== */
-        @media (max-width: 480px) {
-            .container {
-                max-width: 100%;
-            }
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
 
-            .quick-actions {
-                grid-template-columns: 1fr;
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--green);
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 30px 20px;
             }
 
             .stats-grid {
                 grid-template-columns: 1fr;
             }
-        }
 
-        /* ===== SCROLLBAR ===== */
-        .content::-webkit-scrollbar {
-            width: 6px;
-        }
+            .actions-grid {
+                grid-template-columns: 1fr 1fr;
+            }
 
-        .content::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .content::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
-        }
-
-        .content::-webkit-scrollbar-thumb:hover {
-            background: var(--green);
+            .social-buttons {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="app-container">
         <!-- TELA DE LOGIN -->
         <div id="auth-screen">
-            <div class="language-selector">
-                <span>🇧🇷</span>
-                <select id="language" onchange="changeLanguage(this.value)">
-                    <option value="pt">Português</option>
-                    <option value="en">English</option>
-                    <option value="es">Español</option>
-                    <option value="ru">Русский</option>
-                </select>
-            </div>
-
-            <div class="logo-section">
-                <div class="logo">🌿</div>
-                <div class="logo-text">VitalIA</div>
-                <div class="logo-subtitle">Saúde com Inteligência</div>
-            </div>
+            <select id="language" class="language-selector">
+                <option value="pt">🇧🇷 Português</option>
+                <option value="en">🇺🇸 English</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="ru">🇷🇺 Русский</option>
+            </select>
 
             <div class="auth-card">
-                <h2>Acessar sua conta</h2>
-
-                <div class="form-group">
-                    <label>E-MAIL</label>
-                    <input type="email" id="email" placeholder="seu@email.com">
+                <div class="auth-header">
+                    <div class="logo">🌿</div>
+                    <h1>VitalIA</h1>
+                    <p id="auth-subtitle">Saúde com Inteligência</p>
                 </div>
 
-                <div class="form-group">
-                    <label>SENHA</label>
-                    <input type="password" id="password" placeholder="Mínimo 8 caracteres">
+                <form id="login-form">
+                    <h2 id="auth-title" style="color: var(--text); font-size: 18px; margin-bottom: 20px; text-align: center;">Acessar sua conta</h2>
+
+                    <div class="form-group">
+                        <label id="label-email">E-MAIL</label>
+                        <input type="email" id="email" placeholder="seu@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="label-password">SENHA</label>
+                        <input type="password" id="password" placeholder="Mínimo 8 caracteres" required>
+                    </div>
+
+                    <div class="forgot-password">
+                        <a href="#" id="forgot-link">Esqueci minha senha</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="btn-login">🔐 Acessar minha conta</button>
+                </form>
+
+                <div class="divider" id="divider-text">ou continue com</div>
+
+                <div class="social-buttons">
+                    <button class="btn btn-secondary" onclick="socialLogin('google')">🔵</button>
+                    <button class="btn btn-secondary" onclick="socialLogin('apple')">⚫</button>
                 </div>
 
-                <div class="forgot-password">
-                    <a href="#" onclick="showToast('Redefinição de senha em breve')">Esqueci minha senha</a>
-                </div>
+                <button class="btn btn-secondary" onclick="biometricLogin()" id="btn-biometric">🚀 Entrar com Biometria</button>
 
-                <button class="btn-primary" onclick="loginWithEmail()">🔐 Acessar minha conta</button>
-
-                <div class="divider">ou continue com</div>
-
-                <button class="btn-secondary" onclick="loginWithGoogle()">🔵 Google</button>
-                <button class="btn-secondary" onclick="loginWithApple()">⚫ Apple</button>
-
-                <div class="signup-link">
-                    Não tem conta? <a href="#" onclick="showSignupForm()">Criar conta grátis →</a>
+                <div class="auth-footer">
+                    <span id="no-account">Não tem conta?</span>
+                    <a href="#" id="signup-link">Criar conta grátis →</a>
                 </div>
             </div>
         </div>
@@ -749,329 +880,786 @@
         <div id="dashboard">
             <div class="dashboard-header">
                 <h1>VitalIA</h1>
-                <button class="logout-btn" onclick="logout()">🚪 Sair</button>
+                <button class="logout-btn" onclick="logout()" id="btn-logout">🚪 Sair</button>
             </div>
 
             <div class="content">
                 <!-- HOME SCREEN -->
                 <div id="home-screen" class="screen active">
-                    <div class="greeting">Bom dia, <span id="user-name">Usuário</span> 👋</div>
+                    <div class="greeting" id="greeting">Bom dia, Usuário 👋</div>
 
                     <div class="stats-grid">
                         <div class="stat-card">
-                            <div class="stat-value">85</div>
-                            <div class="stat-label">Pontuação</div>
+                            <div class="stat-value" id="score">85</div>
+                            <div class="stat-label" id="label-score">Pontuação</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-value">🔥 7</div>
-                            <div class="stat-label">Streak</div>
+                            <div class="stat-value">🔥 <span id="streak">7</span></div>
+                            <div class="stat-label" id="label-streak">Streak</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-value">1850</div>
-                            <div class="stat-label">Calorias</div>
+                            <div class="stat-value" id="calories">1850</div>
+                            <div class="stat-label" id="label-calories">Calorias</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-value">85g</div>
-                            <div class="stat-label">Proteína</div>
+                            <div class="stat-value" id="protein">85g</div>
+                            <div class="stat-label" id="label-protein">Proteína</div>
                         </div>
                     </div>
 
-                    <div class="section-title">⚡ Ações Rápidas</div>
                     <div class="quick-actions">
-                        <div class="action-card" onclick="navigateTo('nutrition')">
-                            <div class="action-icon">🍽️</div>
-                            <div class="action-label">Nutrição</div>
-                        </div>
-                        <div class="action-card" onclick="navigateTo('coach')">
-                            <div class="action-icon">🤖</div>
-                            <div class="action-label">Coach IA</div>
-                        </div>
-                        <div class="action-card" onclick="navigateTo('scanner')">
-                            <div class="action-icon">📱</div>
-                            <div class="action-label">Scanner</div>
-                        </div>
-                        <div class="action-card" onclick="navigateTo('recipes')">
-                            <div class="action-icon">📖</div>
-                            <div class="action-label">Receitas</div>
-                        </div>
-                        <div class="action-card" onclick="navigateTo('hydration')">
-                            <div class="action-icon">💧</div>
-                            <div class="action-label">Hidratação</div>
-                        </div>
-                        <div class="action-card" onclick="navigateTo('progress')">
-                            <div class="action-icon">📊</div>
-                            <div class="action-label">Progresso</div>
+                        <div class="quick-actions-title" id="quick-actions-title">⚡ Ações Rápidas</div>
+                        <div class="actions-grid">
+                            <div class="action-card" onclick="navigate('nutrition')">
+                                <div class="action-icon">🍽️</div>
+                                <div class="action-label" id="action-nutrition">Nutrição</div>
+                            </div>
+                            <div class="action-card" onclick="navigate('coach')">
+                                <div class="action-icon">🤖</div>
+                                <div class="action-label" id="action-coach">Coach IA</div>
+                            </div>
+                            <div class="action-card" onclick="navigate('scanner')">
+                                <div class="action-icon">📱</div>
+                                <div class="action-label" id="action-scanner">Scanner</div>
+                            </div>
+                            <div class="action-card" onclick="navigate('recipes')">
+                                <div class="action-icon">📖</div>
+                                <div class="action-label" id="action-recipes">Receitas</div>
+                            </div>
+                            <div class="action-card" onclick="navigate('hydration')">
+                                <div class="action-icon">💧</div>
+                                <div class="action-label" id="action-hydration">Hidratação</div>
+                            </div>
+                            <div class="action-card" onclick="navigate('progress')">
+                                <div class="action-icon">📊</div>
+                                <div class="action-label" id="action-progress">Progresso</div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="section-title">🍽️ Refeições de Hoje</div>
-                    <div id="meals-list"></div>
+                    <div class="meals-section">
+                        <div class="meals-title" id="meals-title">🍽️ Refeições de Hoje</div>
+                        <div id="meals-list">
+                            <div class="meal-item">
+                                <div class="meal-info">
+                                    <h4>Café da Manhã</h4>
+                                    <p>Ovos com Pão Integral</p>
+                                </div>
+                                <div class="meal-calories">350 kcal</div>
+                            </div>
+                            <div class="meal-item">
+                                <div class="meal-info">
+                                    <h4>Almoço</h4>
+                                    <p>Frango com Arroz e Feijão</p>
+                                </div>
+                                <div class="meal-calories">650 kcal</div>
+                            </div>
+                            <div class="meal-item">
+                                <div class="meal-info">
+                                    <h4>Lanche</h4>
+                                    <p>Maçã com Amendoim</p>
+                                </div>
+                                <div class="meal-calories">200 kcal</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- NUTRIÇÃO -->
+                <!-- NUTRITION SCREEN -->
                 <div id="nutrition-screen" class="screen">
-                    <div class="section-title">🍽️ Diário Alimentar</div>
-                    <div id="nutrition-content"></div>
+                    <h2 id="nutrition-title" style="color: var(--text); margin-bottom: 20px;">🍽️ Diário Alimentar</h2>
+
+                    <div class="nutrition-input">
+                        <input type="text" id="food-name" placeholder="Nome do alimento" style="margin-bottom: 12px;">
+                        <input type="number" id="food-calories" placeholder="Calorias" style="margin-bottom: 12px;">
+                        <input type="number" id="food-protein" placeholder="Proteína (g)" style="margin-bottom: 12px;">
+                        <input type="number" id="food-carbs" placeholder="Carboidratos (g)" style="margin-bottom: 12px;">
+                        <input type="number" id="food-fat" placeholder="Gordura (g)" style="margin-bottom: 12px;">
+                        <button class="btn-add-meal" onclick="addMeal()" id="btn-add-meal">Adicionar Refeição</button>
+                    </div>
+
+                    <div id="nutrition-list"></div>
                 </div>
 
-                <!-- COACH IA -->
+                <!-- COACH IA SCREEN -->
                 <div id="coach-screen" class="screen">
-                    <div class="section-title">🤖 Coach de Saúde</div>
-                    <div id="coach-content"></div>
+                    <h2 id="coach-title" style="color: var(--text); margin-bottom: 20px;">🤖 Coach de Saúde</h2>
+
+                    <div class="chat-container" style="height: 400px;">
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="message coach">
+                                <span id="coach-greeting">Olá! Sou seu Coach de Saúde. Como posso ajudá-lo hoje?</span>
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" id="chat-input" placeholder="Digite sua mensagem..." style="flex: 1;">
+                            <button onclick="sendMessage()" style="padding: 12px 20px; background: var(--green); color: var(--bg); border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">📤</button>
+                            <button onclick="startVoiceInput()" style="padding: 12px 20px; background: var(--green); color: var(--bg); border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">🎤</button>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- SCANNER -->
+                <!-- SCANNER SCREEN -->
                 <div id="scanner-screen" class="screen">
-                    <div class="section-title">📱 Scanner de Código de Barras</div>
-                    <div id="scanner-content"></div>
+                    <h2 id="scanner-title" style="color: var(--text); margin-bottom: 20px;">📱 Scanner de Código de Barras</h2>
+
+                    <div id="scanner-container"></div>
+                    <button class="btn btn-primary" onclick="startScanner()" id="btn-start-scanner" style="width: 100%; margin-bottom: 20px;">Iniciar Scanner</button>
+
+                    <div id="scanner-results"></div>
                 </div>
 
-                <!-- RECEITAS -->
+                <!-- RECIPES SCREEN -->
                 <div id="recipes-screen" class="screen">
-                    <div class="section-title">📖 Receitas Recomendadas</div>
-                    <div id="recipes-content"></div>
+                    <h2 id="recipes-title" style="color: var(--text); margin-bottom: 20px;">📖 Receitas Recomendadas</h2>
+
+                    <div id="recipes-list"></div>
                 </div>
 
-                <!-- HIDRATAÇÃO -->
+                <!-- HYDRATION SCREEN -->
                 <div id="hydration-screen" class="screen">
-                    <div class="section-title">💧 Hidratação</div>
+                    <h2 id="hydration-title" style="color: var(--text); margin-bottom: 20px;">💧 Hidratação</h2>
+
                     <div class="water-tracker">
-                        <div class="water-bottle">
-                            <div class="water-level" id="water-level" style="height: 60%;"></div>
-                            <div class="water-text" id="water-text">6/8</div>
+                        <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 12px;" id="water-goal">Meta: 8 copos de água</div>
+                        <div style="font-size: 24px; color: var(--green); font-weight: 700; margin-bottom: 12px;"><span id="water-count">6</span>/8</div>
+                        <div class="water-cups" id="water-cups">
+                            <div class="water-cup filled" onclick="toggleWater(0)">💧</div>
+                            <div class="water-cup filled" onclick="toggleWater(1)">💧</div>
+                            <div class="water-cup filled" onclick="toggleWater(2)">💧</div>
+                            <div class="water-cup filled" onclick="toggleWater(3)">💧</div>
+                            <div class="water-cup filled" onclick="toggleWater(4)">💧</div>
+                            <div class="water-cup filled" onclick="toggleWater(5)">💧</div>
+                            <div class="water-cup" onclick="toggleWater(6)">💧</div>
+                            <div class="water-cup" onclick="toggleWater(7)">💧</div>
                         </div>
-                        <div class="water-buttons">
-                            <button class="water-btn" onclick="addWater(-1)">-</button>
-                            <button class="water-btn" onclick="addWater(1)">+</button>
-                        </div>
+                        <button class="btn btn-primary" onclick="resetWater()" id="btn-reset-water">Resetar</button>
                     </div>
                 </div>
 
-                <!-- PROGRESSO -->
+                <!-- PROGRESS SCREEN -->
                 <div id="progress-screen" class="screen">
-                    <div class="section-title">📊 Progresso</div>
-                    <div id="progress-content"></div>
-                </div>
+                    <h2 id="progress-title" style="color: var(--text); margin-bottom: 20px;">📊 Progresso</h2>
 
-                <!-- JEJUM -->
-                <div id="fasting-screen" class="screen">
-                    <div class="section-title">⏱️ Jejum Intermitente</div>
-                    <div class="fasting-protocols">
-                        <div class="protocol-card" onclick="selectFastingProtocol('16:8')">
-                            <div class="protocol-name">16:8</div>
-                            <div class="protocol-desc">16 horas de jejum, 8 horas de alimentação</div>
-                        </div>
-                        <div class="protocol-card" onclick="selectFastingProtocol('18:6')">
-                            <div class="protocol-name">18:6</div>
-                            <div class="protocol-desc">18 horas de jejum, 6 horas de alimentação</div>
-                        </div>
-                        <div class="protocol-card" onclick="selectFastingProtocol('OMAD')">
-                            <div class="protocol-name">OMAD</div>
-                            <div class="protocol-desc">Uma refeição por dia</div>
-                        </div>
-                        <div class="protocol-card" onclick="selectFastingProtocol('5:2')">
-                            <div class="protocol-name">5:2</div>
-                            <div class="protocol-desc">5 dias normais, 2 dias com restrição</div>
+                    <div class="chart-container">
+                        <div class="chart-title" id="chart-title">Progresso Semanal</div>
+                        <canvas id="progress-chart" style="max-height: 200px;"></canvas>
+                    </div>
+
+                    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 20px; color: var(--green); font-weight: 700;">75.5 kg</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);" id="label-weight">Peso</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 20px; color: var(--green); font-weight: 700;">8500</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);" id="label-steps">Passos</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- TREINO -->
-                <div id="workout-screen" class="screen">
-                    <div class="section-title">💪 Treinos</div>
-                    <div class="workout-list">
-                        <div class="workout-card">
-                            <div class="workout-info">
-                                <h3>Musculação</h3>
-                                <p>Peito e Costas</p>
-                            </div>
-                            <div class="workout-duration">45 min</div>
-                        </div>
-                        <div class="workout-card">
-                            <div class="workout-info">
-                                <h3>Cardio</h3>
-                                <p>Corrida</p>
-                            </div>
-                            <div class="workout-duration">30 min</div>
-                        </div>
-                        <div class="workout-card">
-                            <div class="workout-info">
-                                <h3>Yoga</h3>
-                                <p>Flexibilidade</p>
-                            </div>
-                            <div class="workout-duration">20 min</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CONFIGURAÇÕES -->
+                <!-- SETTINGS SCREEN -->
                 <div id="settings-screen" class="screen">
-                    <div class="section-title">⚙️ Configurações</div>
-                    <div class="settings-list">
-                        <div class="setting-item" onclick="changeLanguage('pt')">
-                            <span class="setting-label">Idioma</span>
-                            <span class="setting-value">Português</span>
-                        </div>
-                        <div class="setting-item" onclick="showToast('Sincronização com Wearables em breve')">
-                            <span class="setting-label">Wearables</span>
-                            <span class="setting-value">Conectar dispositivo</span>
-                        </div>
-                        <div class="setting-item" onclick="showToast('Notificações ativadas')">
-                            <span class="setting-label">Notificações</span>
-                            <span class="setting-value">Ativadas</span>
-                        </div>
-                        <div class="setting-item" onclick="logout()">
-                            <span class="setting-label">Sair</span>
-                            <span class="setting-value">Fazer logout</span>
-                        </div>
+                    <h2 id="settings-title" style="color: var(--text); margin-bottom: 20px;">⚙️ Configurações</h2>
+
+                    <div class="settings-item">
+                        <div class="settings-label" id="label-language">Idioma</div>
+                        <select id="settings-language" style="background: var(--bg); border: 1px solid var(--border); color: var(--green); padding: 8px; border-radius: 8px; cursor: pointer;">
+                            <option value="pt">Português</option>
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                            <option value="ru">Русский</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="settings-label" id="label-wearables">Wearables</div>
+                        <button class="btn btn-secondary" onclick="connectWearable()" id="btn-connect-wearable" style="width: auto; padding: 8px 16px;">Conectar</button>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="settings-label" id="label-notifications">Notificações</div>
+                        <button class="btn btn-secondary" onclick="toggleNotifications()" id="btn-notifications" style="width: auto; padding: 8px 16px;">Ativar</button>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="settings-label" id="label-telegram">Telegram</div>
+                        <button class="btn btn-secondary" onclick="connectTelegram()" id="btn-telegram" style="width: auto; padding: 8px 16px;">Conectar</button>
                     </div>
                 </div>
             </div>
 
             <!-- BOTTOM NAVIGATION -->
             <div class="bottom-nav">
-                <button class="nav-item active" onclick="navigateTo('home')">
+                <button class="nav-item active" onclick="navigate('home')">
                     <div class="nav-icon">🏠</div>
-                    <div>Início</div>
+                    <div class="nav-label" id="nav-home">Início</div>
                 </button>
-                <button class="nav-item" onclick="navigateTo('nutrition')">
+                <button class="nav-item" onclick="navigate('nutrition')">
                     <div class="nav-icon">🍽️</div>
-                    <div>Nutrição</div>
+                    <div class="nav-label" id="nav-nutrition">Nutrição</div>
                 </button>
-                <button class="nav-item" onclick="navigateTo('coach')">
+                <button class="nav-item" onclick="navigate('coach')">
                     <div class="nav-icon">🤖</div>
-                    <div>Coach</div>
+                    <div class="nav-label" id="nav-coach">Coach</div>
                 </button>
-                <button class="nav-item" onclick="navigateTo('fasting')">
-                    <div class="nav-icon">⏱️</div>
-                    <div>Jejum</div>
+                <button class="nav-item" onclick="navigate('hydration')">
+                    <div class="nav-icon">💧</div>
+                    <div class="nav-label" id="nav-hydration">Água</div>
                 </button>
-                <button class="nav-item" onclick="navigateTo('settings')">
+                <button class="nav-item" onclick="navigate('settings')">
                     <div class="nav-icon">⚙️</div>
-                    <div>Mais</div>
+                    <div class="nav-label" id="nav-settings">Mais</div>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">✕</button>
-            <div id="modal-body"></div>
-        </div>
-    </div>
-
     <script>
-        // ===== FIREBASE CONFIG =====
-        const firebaseConfig = {
-            apiKey: "AIzaSyABCDEFGHIJKLMNOPQRSTUVWXYZ",
-            authDomain: "vitalia-app-4cc06.firebaseapp.com",
-            projectId: "vitalia-app-4cc06",
-            storageBucket: "vitalia-app-4cc06.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef123456"
+        // ============================================================================
+        // CONFIGURAÇÃO GLOBAL
+        // ============================================================================
+
+        let currentLanguage = 'pt';
+        let currentUser = null;
+        let meals = [];
+        let waterIntake = 6;
+        let currentScreen = 'home';
+
+        const translations = {
+            pt: {
+                'auth-subtitle': 'Saúde com Inteligência',
+                'auth-title': 'Acessar sua conta',
+                'label-email': 'E-MAIL',
+                'label-password': 'SENHA',
+                'forgot-link': 'Esqueci minha senha',
+                'btn-login': '🔐 Acessar minha conta',
+                'divider-text': 'ou continue com',
+                'btn-biometric': '🚀 Entrar com Biometria',
+                'no-account': 'Não tem conta?',
+                'signup-link': 'Criar conta grátis →',
+                'btn-logout': '🚪 Sair',
+                'greeting': 'Bom dia, Usuário 👋',
+                'label-score': 'Pontuação',
+                'label-streak': 'Streak',
+                'label-calories': 'Calorias',
+                'label-protein': 'Proteína',
+                'quick-actions-title': '⚡ Ações Rápidas',
+                'action-nutrition': 'Nutrição',
+                'action-coach': 'Coach IA',
+                'action-scanner': 'Scanner',
+                'action-recipes': 'Receitas',
+                'action-hydration': 'Hidratação',
+                'action-progress': 'Progresso',
+                'meals-title': '🍽️ Refeições de Hoje',
+                'nutrition-title': '🍽️ Diário Alimentar',
+                'btn-add-meal': 'Adicionar Refeição',
+                'coach-title': '🤖 Coach de Saúde',
+                'coach-greeting': 'Olá! Sou seu Coach de Saúde. Como posso ajudá-lo hoje?',
+                'scanner-title': '📱 Scanner de Código de Barras',
+                'btn-start-scanner': 'Iniciar Scanner',
+                'recipes-title': '📖 Receitas Recomendadas',
+                'hydration-title': '💧 Hidratação',
+                'water-goal': 'Meta: 8 copos de água',
+                'btn-reset-water': 'Resetar',
+                'progress-title': '📊 Progresso',
+                'chart-title': 'Progresso Semanal',
+                'label-weight': 'Peso',
+                'label-steps': 'Passos',
+                'settings-title': '⚙️ Configurações',
+                'label-language': 'Idioma',
+                'label-wearables': 'Wearables',
+                'btn-connect-wearable': 'Conectar',
+                'label-notifications': 'Notificações',
+                'btn-notifications': 'Ativar',
+                'label-telegram': 'Telegram',
+                'btn-telegram': 'Conectar',
+                'nav-home': 'Início',
+                'nav-nutrition': 'Nutrição',
+                'nav-coach': 'Coach',
+                'nav-hydration': 'Água',
+                'nav-settings': 'Mais'
+            },
+            en: {
+                'auth-subtitle': 'Health with Intelligence',
+                'auth-title': 'Access your account',
+                'label-email': 'EMAIL',
+                'label-password': 'PASSWORD',
+                'forgot-link': 'Forgot my password',
+                'btn-login': '🔐 Access my account',
+                'divider-text': 'or continue with',
+                'btn-biometric': '🚀 Login with Biometrics',
+                'no-account': 'No account?',
+                'signup-link': 'Create free account →',
+                'btn-logout': '🚪 Logout',
+                'greeting': 'Good morning, User 👋',
+                'label-score': 'Score',
+                'label-streak': 'Streak',
+                'label-calories': 'Calories',
+                'label-protein': 'Protein',
+                'quick-actions-title': '⚡ Quick Actions',
+                'action-nutrition': 'Nutrition',
+                'action-coach': 'AI Coach',
+                'action-scanner': 'Scanner',
+                'action-recipes': 'Recipes',
+                'action-hydration': 'Hydration',
+                'action-progress': 'Progress',
+                'meals-title': '🍽️ Today\'s Meals',
+                'nutrition-title': '🍽️ Food Diary',
+                'btn-add-meal': 'Add Meal',
+                'coach-title': '🤖 Health Coach',
+                'coach-greeting': 'Hello! I\'m your Health Coach. How can I help you today?',
+                'scanner-title': '📱 Barcode Scanner',
+                'btn-start-scanner': 'Start Scanner',
+                'recipes-title': '📖 Recommended Recipes',
+                'hydration-title': '💧 Hydration',
+                'water-goal': 'Goal: 8 glasses of water',
+                'btn-reset-water': 'Reset',
+                'progress-title': '📊 Progress',
+                'chart-title': 'Weekly Progress',
+                'label-weight': 'Weight',
+                'label-steps': 'Steps',
+                'settings-title': '⚙️ Settings',
+                'label-language': 'Language',
+                'label-wearables': 'Wearables',
+                'btn-connect-wearable': 'Connect',
+                'label-notifications': 'Notifications',
+                'btn-notifications': 'Enable',
+                'label-telegram': 'Telegram',
+                'btn-telegram': 'Connect',
+                'nav-home': 'Home',
+                'nav-nutrition': 'Nutrition',
+                'nav-coach': 'Coach',
+                'nav-hydration': 'Water',
+                'nav-settings': 'More'
+            },
+            es: {
+                'auth-subtitle': 'Salud con Inteligencia',
+                'auth-title': 'Accede a tu cuenta',
+                'label-email': 'CORREO',
+                'label-password': 'CONTRASEÑA',
+                'forgot-link': 'Olvidé mi contraseña',
+                'btn-login': '🔐 Acceder a mi cuenta',
+                'divider-text': 'o continúa con',
+                'btn-biometric': '🚀 Iniciar sesión con Biometría',
+                'no-account': '¿Sin cuenta?',
+                'signup-link': 'Crear cuenta gratis →',
+                'btn-logout': '🚪 Salir',
+                'greeting': 'Buenos días, Usuario 👋',
+                'label-score': 'Puntuación',
+                'label-streak': 'Racha',
+                'label-calories': 'Calorías',
+                'label-protein': 'Proteína',
+                'quick-actions-title': '⚡ Acciones Rápidas',
+                'action-nutrition': 'Nutrición',
+                'action-coach': 'Coach IA',
+                'action-scanner': 'Escáner',
+                'action-recipes': 'Recetas',
+                'action-hydration': 'Hidratación',
+                'action-progress': 'Progreso',
+                'meals-title': '🍽️ Comidas de Hoy',
+                'nutrition-title': '🍽️ Diario Alimenticio',
+                'btn-add-meal': 'Agregar Comida',
+                'coach-title': '🤖 Coach de Salud',
+                'coach-greeting': '¡Hola! Soy tu Coach de Salud. ¿Cómo puedo ayudarte hoy?',
+                'scanner-title': '📱 Escáner de Códigos de Barras',
+                'btn-start-scanner': 'Iniciar Escáner',
+                'recipes-title': '📖 Recetas Recomendadas',
+                'hydration-title': '💧 Hidratación',
+                'water-goal': 'Meta: 8 vasos de agua',
+                'btn-reset-water': 'Reiniciar',
+                'progress-title': '📊 Progreso',
+                'chart-title': 'Progreso Semanal',
+                'label-weight': 'Peso',
+                'label-steps': 'Pasos',
+                'settings-title': '⚙️ Configuración',
+                'label-language': 'Idioma',
+                'label-wearables': 'Wearables',
+                'btn-connect-wearable': 'Conectar',
+                'label-notifications': 'Notificaciones',
+                'btn-notifications': 'Activar',
+                'label-telegram': 'Telegram',
+                'btn-telegram': 'Conectar',
+                'nav-home': 'Inicio',
+                'nav-nutrition': 'Nutrición',
+                'nav-coach': 'Coach',
+                'nav-hydration': 'Agua',
+                'nav-settings': 'Más'
+            },
+            ru: {
+                'auth-subtitle': 'Здоровье с интеллектом',
+                'auth-title': 'Доступ к вашему аккаунту',
+                'label-email': 'ЭЛЕКТРОННАЯ ПОЧТА',
+                'label-password': 'ПАРОЛЬ',
+                'forgot-link': 'Забыл пароль',
+                'btn-login': '🔐 Доступ к моему аккаунту',
+                'divider-text': 'или продолжить с',
+                'btn-biometric': '🚀 Вход с биометрией',
+                'no-account': 'Нет аккаунта?',
+                'signup-link': 'Создать бесплатный аккаунт →',
+                'btn-logout': '🚪 Выход',
+                'greeting': 'Доброе утро, Пользователь 👋',
+                'label-score': 'Оценка',
+                'label-streak': 'Серия',
+                'label-calories': 'Калории',
+                'label-protein': 'Белок',
+                'quick-actions-title': '⚡ Быстрые действия',
+                'action-nutrition': 'Питание',
+                'action-coach': 'AI Тренер',
+                'action-scanner': 'Сканер',
+                'action-recipes': 'Рецепты',
+                'action-hydration': 'Гидратация',
+                'action-progress': 'Прогресс',
+                'meals-title': '🍽️ Сегодняшние приемы пищи',
+                'nutrition-title': '🍽️ Дневник питания',
+                'btn-add-meal': 'Добавить прием пищи',
+                'coach-title': '🤖 Тренер здоровья',
+                'coach-greeting': 'Привет! Я ваш тренер здоровья. Чем я могу вам помочь?',
+                'scanner-title': '📱 Сканер штрих-кодов',
+                'btn-start-scanner': 'Начать сканирование',
+                'recipes-title': '📖 Рекомендуемые рецепты',
+                'hydration-title': '💧 Гидратация',
+                'water-goal': 'Цель: 8 стаканов воды',
+                'btn-reset-water': 'Сброс',
+                'progress-title': '📊 Прогресс',
+                'chart-title': 'Еженедельный прогресс',
+                'label-weight': 'Вес',
+                'label-steps': 'Шаги',
+                'settings-title': '⚙️ Настройки',
+                'label-language': 'Язык',
+                'label-wearables': 'Носимые устройства',
+                'btn-connect-wearable': 'Подключить',
+                'label-notifications': 'Уведомления',
+                'btn-notifications': 'Включить',
+                'label-telegram': 'Telegram',
+                'btn-telegram': 'Подключить',
+                'nav-home': 'Главная',
+                'nav-nutrition': 'Питание',
+                'nav-coach': 'Тренер',
+                'nav-hydration': 'Вода',
+                'nav-settings': 'Еще'
+            }
         };
 
-        let currentUser = null;
-        let currentScreen = 'home';
-        let waterIntake = 6;
+        // ============================================================================
+        // FUNÇÕES DE TRADUÇÃO
+        // ============================================================================
 
-        // ===== FUNÇÕES DE NAVEGAÇÃO =====
-        function navigateTo(screen) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screen + '-screen').classList.add('active');
-            
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            event.target.closest('.nav-item').classList.add('active');
-            
-            currentScreen = screen;
+        function updateLanguage() {
+            const lang = translations[currentLanguage];
+            Object.keys(lang).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = lang[key];
+                    } else {
+                        element.textContent = lang[key];
+                    }
+                }
+            });
+            localStorage.setItem('language', currentLanguage);
         }
 
-        // ===== AUTENTICAÇÃO =====
-        function loginWithEmail() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+        document.getElementById('language').addEventListener('change', (e) => {
+            currentLanguage = e.target.value;
+            updateLanguage();
+        });
 
-            if (!email || !password) {
-                showToast('Preencha todos os campos');
-                return;
+        // ============================================================================
+        // FUNÇÕES DE AUTENTICAÇÃO
+        // ============================================================================
+
+        function login(email, password) {
+            if (email && password.length >= 8) {
+                currentUser = { email, name: email.split('@')[0] };
+                localStorage.setItem('user', JSON.stringify(currentUser));
+                showDashboard();
+                showToast('✅ Login realizado com sucesso!', 'success');
+            } else {
+                showToast('❌ Email ou senha inválidos', 'error');
             }
-
-            currentUser = { email, name: email.split('@')[0] };
-            showDashboard();
-            showToast('✅ Login realizado com sucesso!');
-        }
-
-        function loginWithGoogle() {
-            currentUser = { email: 'usuario@gmail.com', name: 'Usuário Google' };
-            showDashboard();
-            showToast('✅ Login com Google realizado!');
-        }
-
-        function loginWithApple() {
-            currentUser = { email: 'usuario@icloud.com', name: 'Usuário Apple' };
-            showDashboard();
-            showToast('✅ Login com Apple realizado!');
         }
 
         function logout() {
             currentUser = null;
+            localStorage.removeItem('user');
             document.getElementById('auth-screen').style.display = 'flex';
             document.getElementById('dashboard').style.display = 'none';
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
-            showToast('✅ Logout realizado');
+            showToast('✅ Logout realizado', 'success');
         }
+
+        function socialLogin(provider) {
+            currentUser = { email: `user@${provider}.com`, name: 'User' };
+            localStorage.setItem('user', JSON.stringify(currentUser));
+            showDashboard();
+            showToast(`✅ Login com ${provider} realizado!`, 'success');
+        }
+
+        function biometricLogin() {
+            if (window.PublicKeyCredential) {
+                currentUser = { email: 'biometric@vitalia.app', name: 'Biometric User' };
+                localStorage.setItem('user', JSON.stringify(currentUser));
+                showDashboard();
+                showToast('✅ Biometria reconhecida!', 'success');
+            } else {
+                showToast('❌ Biometria não suportada', 'error');
+            }
+        }
+
+        // ============================================================================
+        // FUNÇÕES DE INTERFACE
+        // ============================================================================
 
         function showDashboard() {
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('dashboard').style.display = 'flex';
-            document.getElementById('user-name').textContent = currentUser.name;
+            updateGreeting();
         }
 
-        function showSignupForm() {
-            showToast('Redirecionando para cadastro...');
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            const greeting = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite';
+            const name = currentUser?.name || 'Usuário';
+            document.getElementById('greeting').textContent = `${greeting}, ${name} 👋`;
         }
 
-        // ===== HIDRATAÇÃO =====
-        function addWater(amount) {
-            waterIntake = Math.max(0, Math.min(8, waterIntake + amount));
-            updateWaterDisplay();
-            showToast(`💧 ${waterIntake}/8 copos`);
+        function navigate(screen) {
+            currentScreen = screen;
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(`${screen}-screen`).classList.add('active');
+
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.target.closest('.nav-item').classList.add('active');
         }
 
-        function updateWaterDisplay() {
-            const percentage = (waterIntake / 8) * 100;
-            document.getElementById('water-level').style.height = percentage + '%';
-            document.getElementById('water-text').textContent = waterIntake + '/8';
-        }
-
-        // ===== JEJUM =====
-        function selectFastingProtocol(protocol) {
-            showToast(`⏱️ Protocolo ${protocol} selecionado`);
-        }
-
-        // ===== UTILIDADES =====
-        function showToast(message) {
+        function showToast(message, type = 'info') {
             const toast = document.createElement('div');
-            toast.className = 'toast';
+            toast.className = `toast ${type}`;
             toast.textContent = message;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
         }
 
-        function changeLanguage(lang) {
-            showToast(`🌐 Idioma alterado para ${lang.toUpperCase()}`);
+        // ============================================================================
+        // FUNÇÕES DE NUTRIÇÃO
+        // ============================================================================
+
+        function addMeal() {
+            const name = document.getElementById('food-name').value;
+            const calories = document.getElementById('food-calories').value;
+            const protein = document.getElementById('food-protein').value;
+            const carbs = document.getElementById('food-carbs').value;
+            const fat = document.getElementById('food-fat').value;
+
+            if (name && calories) {
+                const meal = { name, calories, protein, carbs, fat };
+                meals.push(meal);
+                localStorage.setItem('meals', JSON.stringify(meals));
+                renderMeals();
+                document.getElementById('food-name').value = '';
+                document.getElementById('food-calories').value = '';
+                document.getElementById('food-protein').value = '';
+                document.getElementById('food-carbs').value = '';
+                document.getElementById('food-fat').value = '';
+                showToast('✅ Refeição adicionada!', 'success');
+            }
         }
 
-        function closeModal() {
-            document.getElementById('modal').classList.remove('active');
+        function renderMeals() {
+            const list = document.getElementById('nutrition-list');
+            list.innerHTML = meals.map((meal, i) => `
+                <div class="meal-item">
+                    <div class="meal-info">
+                        <h4>${meal.name}</h4>
+                        <p>P: ${meal.protein}g | C: ${meal.carbs}g | G: ${meal.fat}g</p>
+                    </div>
+                    <div class="meal-calories">${meal.calories} kcal</div>
+                </div>
+            `).join('');
         }
 
-        // ===== INICIALIZAÇÃO =====
-        document.addEventListener('DOMContentLoaded', () => {
-            updateWaterDisplay();
+        // ============================================================================
+        // FUNÇÕES DE CHAT/COACH IA
+        // ============================================================================
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value;
+
+            if (message) {
+                const messagesDiv = document.getElementById('chat-messages');
+                messagesDiv.innerHTML += `<div class="message user">${message}</div>`;
+                input.value = '';
+
+                setTimeout(() => {
+                    const responses = [
+                        'Ótimo! Continue assim! 💪',
+                        'Você está no caminho certo! 🎯',
+                        'Lembre-se de beber água! 💧',
+                        'Excelente progresso! 📈',
+                        'Você consegue! 🚀'
+                    ];
+                    const response = responses[Math.floor(Math.random() * responses.length)];
+                    messagesDiv.innerHTML += `<div class="message coach">${response}</div>`;
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                }, 500);
+            }
+        }
+
+        function startVoiceInput() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                recognition.start();
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    document.getElementById('chat-input').value = transcript;
+                    sendMessage();
+                };
+            }
+        }
+
+        // ============================================================================
+        // FUNÇÕES DE SCANNER
+        // ============================================================================
+
+        function startScanner() {
+            showToast('📱 Scanner iniciado!', 'success');
+            setTimeout(() => {
+                const results = document.getElementById('scanner-results');
+                results.innerHTML = `
+                    <div class="scanner-result">
+                        <h3>🍎 Maçã Gala</h3>
+                        <p>Código: 7896045250127</p>
+                        <p>Calorias: 52 kcal</p>
+                        <p>Proteína: 0.3g | Carboidratos: 13.8g | Gordura: 0.2g</p>
+                    </div>
+                `;
+            }, 1000);
+        }
+
+        // ============================================================================
+        // FUNÇÕES DE HIDRATAÇÃO
+        // ============================================================================
+
+        function toggleWater(index) {
+            const cups = document.querySelectorAll('.water-cup');
+            cups[index].classList.toggle('filled');
+            waterIntake = Array.from(cups).filter(c => c.classList.contains('filled')).length;
+            document.getElementById('water-count').textContent = waterIntake;
+            localStorage.setItem('waterIntake', waterIntake);
+        }
+
+        function resetWater() {
+            document.querySelectorAll('.water-cup').forEach((cup, i) => {
+                if (i < 6) cup.classList.add('filled');
+                else cup.classList.remove('filled');
+            });
+            waterIntake = 6;
+            document.getElementById('water-count').textContent = waterIntake;
+            localStorage.setItem('waterIntake', waterIntake);
+        }
+
+        // ============================================================================
+        // FUNÇÕES DE CONFIGURAÇÕES
+        // ============================================================================
+
+        function connectWearable() {
+            showToast('✅ Wearable conectado!', 'success');
+        }
+
+        function toggleNotifications() {
+            showToast('✅ Notificações ativadas!', 'success');
+        }
+
+        function connectTelegram() {
+            if (window.Telegram?.WebApp) {
+                window.Telegram.WebApp.ready();
+                showToast('✅ Telegram conectado!', 'success');
+            } else {
+                showToast('ℹ️ Abra no Telegram para conectar', 'info');
+            }
+        }
+
+        // ============================================================================
+        // INICIALIZAÇÃO
+        // ============================================================================
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLanguage = localStorage.getItem('language') || 'pt';
+            currentLanguage = savedLanguage;
+            document.getElementById('language').value = savedLanguage;
+            updateLanguage();
+
+            const savedUser = localStorage.getItem('user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showDashboard();
+            }
+
+            const savedMeals = localStorage.getItem('meals');
+            if (savedMeals) {
+                meals = JSON.parse(savedMeals);
+                renderMeals();
+            }
+
+            const savedWater = localStorage.getItem('waterIntake');
+            if (savedWater) {
+                waterIntake = parseInt(savedWater);
+                document.getElementById('water-count').textContent = waterIntake;
+                document.querySelectorAll('.water-cup').forEach((cup, i) => {
+                    if (i < waterIntake) cup.classList.add('filled');
+                    else cup.classList.remove('filled');
+                });
+            }
+
+            document.getElementById('login-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                login(email, password);
+            });
+
+            // Gráfico de Progresso
+            setTimeout(() => {
+                const ctx = document.getElementById('progress-chart');
+                if (ctx) {
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom'],
+                            datasets: [{
+                                label: 'Pontuação',
+                                data: [70, 75, 72, 80, 85, 82, 85],
+                                borderColor: '#00ff88',
+                                backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#e0ffe8' }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    ticks: { color: '#a8d5ba' },
+                                    grid: { color: '#1a4d2e' }
+                                },
+                                x: {
+                                    ticks: { color: '#a8d5ba' },
+                                    grid: { color: '#1a4d2e' }
+                                }
+                            }
+                        }
+                    });
+                }
+            }, 500);
         });
     </script>
 </body>
