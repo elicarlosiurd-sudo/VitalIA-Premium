@@ -2672,7 +2672,7 @@ function socialLogin(provider) {
 
 async function tryBiometric() {
   // Try WebAuthn first (real fingerprint/FaceID)
-  if (window.PublicKeyCredential && localStorage.getItem('v_webauthn_id')) {
+  if (isWebAuthnAvailable() && localStorage.getItem('v_webauthn_id')) {
     try {
       const credId = localStorage.getItem('v_webauthn_id');
       const challenge = new Uint8Array(32);
@@ -2710,7 +2710,7 @@ async function tryBiometric() {
   // Fallback: PIN or simple biometric simulation
   if (localStorage.getItem('v_biometric')) {
     // Show device biometric prompt simulation
-    if (window.PublicKeyCredential) {
+    if (isWebAuthnAvailable()) {
       toast('🔐 '+t('toast_bio_check'),'info',1500);
       setTimeout(async () => {
         APP.user = JSON.parse(localStorage.getItem('v_user')||'null') || {name:'Usuário',email:'user@demo.com'};
@@ -2732,9 +2732,16 @@ async function tryBiometric() {
   }
 }
 
+
+// Verificar HTTPS para WebAuthn
+function isWebAuthnAvailable() {
+  return window.PublicKeyCredential && 
+         (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1');
+}
+
 async function activateBiometric() {
   // Try real WebAuthn registration
-  if (window.PublicKeyCredential && navigator.credentials) {
+  if (isWebAuthnAvailable() && navigator.credentials) {
     try {
       const challenge = new Uint8Array(32);
       window.crypto.getRandomValues(challenge);
@@ -2780,7 +2787,7 @@ function selectLanguageReg(code) {
 
 async function tryBiometric() {
   // Try WebAuthn first (real fingerprint/FaceID)
-  if (window.PublicKeyCredential && localStorage.getItem('v_webauthn_id')) {
+  if (isWebAuthnAvailable() && localStorage.getItem('v_webauthn_id')) {
     try {
       const credId = localStorage.getItem('v_webauthn_id');
       const challenge = new Uint8Array(32);
@@ -2815,7 +2822,7 @@ async function tryBiometric() {
   }
   // Fallback: PIN or simple biometric simulation
   if (localStorage.getItem('v_biometric')) {
-    if (window.PublicKeyCredential) {
+    if (isWebAuthnAvailable()) {
       toast('Verificando biometria...','info',1500);
       setTimeout(async () => {
         APP.user = JSON.parse(localStorage.getItem('v_user')||'null') || {name:'Usuario',email:'user@demo.com'};
@@ -2838,7 +2845,7 @@ async function tryBiometric() {
 
 async function activateBiometric() {
   // Try real WebAuthn registration
-  if (window.PublicKeyCredential && navigator.credentials) {
+  if (isWebAuthnAvailable() && navigator.credentials) {
     try {
       const challenge = new Uint8Array(32);
       window.crypto.getRandomValues(challenge);
@@ -2851,7 +2858,7 @@ async function activateBiometric() {
           rp: { name: 'VitalIA', id: location.hostname || 'localhost' },
           user: { id: userId, name: APP.user?.email || 'user', displayName: APP.profile?.name || 'Usuario' },
           pubKeyCredParams: [{ alg: -7, type: 'public-key' }, { alg: -257, type: 'public-key' }],
-          authenticatorSelection: { userVerification:'required', residentKey: 'preferred' },
+          authenticatorSelection: { authenticatorAttachment: 'platform', userVerification:'required', residentKey: 'preferred' },
           timeout: 30000,
         }
       });
