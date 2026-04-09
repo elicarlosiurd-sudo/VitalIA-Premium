@@ -2685,8 +2685,7 @@ async function tryBiometric() {
             ? window.location.hostname
             : 'vital-ia-premium.vercel.app',
           userVerification: 'required',
-          timeout: 60000,
-          hints: ['security-key', 'client-device']
+          timeout: 60000
         }
       });
 
@@ -2774,14 +2773,13 @@ async function activateBiometric() {
             { alg: -257, type: 'public-key' }  // RS256
           ],
           authenticatorSelection: {
-            authenticatorAttachment: 'platform',  // Força celular atual
-            residentKey: 'required',              // OBRIGATÓRIO: Aciona Google Password Manager
-            requireResidentKey: true,             // Compatibilidade
-            userVerification: 'required',         // Força digital/PIN do sistema
-            hints: ['security-key', 'client-device']  // Prioriza cliente
+            authenticatorAttachment: 'platform',
+            residentKey: 'required',
+            requireResidentKey: true,
+            userVerification: 'required'
           },
           timeout: 60000,
-          attestation: 'direct'
+          attestation: 'none'
         }
       });
 
