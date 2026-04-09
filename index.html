@@ -826,8 +826,17 @@ async function sbSignUp(email, password, nome) {
 }
 
 async function sbSignIn(email, password) {
-  const { data, error } = await sb.auth.signInWithPassword({ email, password });
-  return { data, error };
+  try {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    return { data, error };
+  } catch(e) {
+    // Fallback: localStorage
+    const stored = JSON.parse(localStorage.getItem('v_users')||'{}');
+    if (stored[email] && stored[email].password === btoa(password)) {
+      return { data: { user: { email, id: stored[email].id, user_metadata: { nome: stored[email].name } }, session: { access_token: 'sess_' + Date.now() } }, error: null };
+    }
+    return { data: null, error: { message: 'Invalid login credentials' } };
+  }
 }
 
 async function sbSignOut() {
