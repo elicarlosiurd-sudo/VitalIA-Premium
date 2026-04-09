@@ -818,91 +818,16 @@ try {
 
 // ── Auth helpers ──────────────────────
 async function sbSignUp(email, password, nome) {
-  try {
-    // Tentar Supabase primeiro
-    if (sb && sb.auth && sb.auth.signUp) {
-      const { data, error } = await sb.auth.signUp({
-        email, password,
-        options: { data: { nome } }
-      });
-      if (!error) return { data, error };
-    }
-  } catch (e) {
-    console.log('Supabase indisponivel, usando localStorage');
-  }
-  
-  // Fallback: localStorage
-  const users = JSON.parse(localStorage.getItem('v_users') || '{}');
-  
-  // Verificar se email ja existe
-  if (users[email]) {
-    return { 
-      data: null, 
-      error: { message: 'Email ja registrado' } 
-    };
-  }
-  
-  // Criar novo usuario
-  const userId = 'user_' + Date.now();
-  const hashedPassword = btoa(password); // Simple encoding (not secure - for demo)
-  
-  users[email] = {
-    id: userId,
-    email: email,
-    password: hashedPassword,
-    nome: nome,
-    criado_em: new Date().toISOString()
-  };
-  
-  localStorage.setItem('v_users', JSON.stringify(users));
-  
-  return {
-    data: {
-      user: { id: userId, email: email },
-      session: { access_token: 'session_' + userId }
-    },
-    error: null
-  };
+  const { data, error } = await sb.auth.signUp({
+    email, password,
+    options: { data: { nome } }
+  });
+  return { data, error };
 }
 
 async function sbSignIn(email, password) {
-  try {
-    // Tentar Supabase primeiro
-    if (sb && sb.auth && sb.auth.signInWithPassword) {
-      const { data, error } = await sb.auth.signInWithPassword({ email, password });
-      if (!error) return { data, error };
-    }
-  } catch (e) {
-    console.log('Supabase indisponivel, usando localStorage');
-  }
-  
-  // Fallback: localStorage
-  const users = JSON.parse(localStorage.getItem('v_users') || '{}');
-  
-  if (!users[email]) {
-    return { 
-      data: null, 
-      error: { message: 'Email ou senha incorretos' } 
-    };
-  }
-  
-  const user = users[email];
-  const hashedPassword = btoa(password);
-  
-  if (user.password !== hashedPassword) {
-    return { 
-      data: null, 
-      error: { message: 'Email ou senha incorretos' } 
-    };
-  }
-  
-  return {
-    data: {
-      user: { id: user.id, email: user.email },
-      session: { access_token: 'session_' + user.id }
-    },
-    error: null
-  };
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  return { data, error };
 }
 
 async function sbSignOut() {
@@ -2671,73 +2596,60 @@ function socialLogin(provider) {
 }
 
 async function tryBiometric() {
-  // Passkey Discoverable (Google Password Manager / iOS Keychain)
-  if (isWebAuthnAvailable() && localStorage.getItem('v_passkey_registered')) {
+  // Try WebAuthn first (real fingerprint/FaceID)
+  if (window.PublicKeyCredential && localStorage.getItem('v_webauthn_id')) {
     try {
+      const credId = localStorage.getItem('v_webauthn_id');
       const challenge = new Uint8Array(32);
       window.crypto.getRandomValues(challenge);
-      
-      // Fluxo Discoverable: sem allowCredentials - aciona Google Password Manager
       const assertion = await navigator.credentials.get({
         publicKey: {
           challenge,
-          rpId: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-            ? window.location.hostname
-            : 'vital-ia-premium.vercel.app',
-          userVerification: 'required',
-          timeout: 60000
+          allowCredentials: [{
+            id: Uint8Array.from(atob(credId), c => c.charCodeAt(0)),
+            type: 'public-key',
+          }],
+          userVerification:'required',
+          timeout: 30000,
         }
       });
-
       if (assertion) {
-        toast('Passkey verificado!', 'success');
+        toast('✅ '+t('toast_bio_ok'),'success');
         setTimeout(async () => {
-          APP.user = JSON.parse(localStorage.getItem('v_user')||'null') || {name:'Usuario',email:'user@demo.com'};
-          APP.profile = JSON.parse(localStorage.getItem('v_profile')||'null') || {name:'Usuario',weight:78,height:175,age:30,gender:'m',goal:'lose',activity:'mod'};
+          APP.user = JSON.parse(localStorage.getItem('v_user')||'null') || {name:'Usuário',email:'user@demo.com'};
+          APP.profile = JSON.parse(localStorage.getItem('v_profile')||'null') || {name:'Usuário',weight:78,height:175,age:30,gender:'m',goal:'lose',activity:'mod'};
           APP.calc = calcProfile(APP.profile);
           APP.water = APP.water||0; APP.meals=[];
-          APP.session = 'passkey_' + Date.now();
+          APP.session = 'bio_' + Date.now();
           save('v_session', APP.session);
+          // Sync from Supabase if user has id
           if (APP.user?.id) await syncFromSupabase(APP.user.id);
-          toast('Acesso com Passkey!', 'success');
           finishAuth();
         }, 600);
         return;
       }
     } catch(e) {
-      console.log('Passkey auth error:', e.name, e.message);
-      
-      // Fallback: NotAllowedError (usuário cancelou)
-      if (e.name === 'NotAllowedError') {
-        toast('Autenticação cancelada. Tente novamente.', 'warning', 2000);
-        return;
-      }
-      
-      // Outro erro: tentar PIN
-      APP.authStep = 'pin';
-      APP.pinInput = '';
-      renderAuth();
-      return;
+      // WebAuthn failed, fall through to PIN
     }
   }
-  
-  // Fallback: Passkey não registrado, usar PIN
+  // Fallback: PIN or simple biometric simulation
   if (localStorage.getItem('v_biometric')) {
-    if (isWebAuthnAvailable()) {
-      toast('Verificando biometria...','info',1500);
+    // Show device biometric prompt simulation
+    if (window.PublicKeyCredential) {
+      toast('🔐 '+t('toast_bio_check'),'info',1500);
       setTimeout(async () => {
-        APP.user = JSON.parse(localStorage.getItem('v_user')||'null') || {name:'Usuario',email:'user@demo.com'};
-        APP.profile = JSON.parse(localStorage.getItem('v_profile')||'null') || {name:'Usuario',weight:78,height:175,age:30,gender:'m',goal:'lose',activity:'mod'};
+        APP.user = JSON.parse(localStorage.getItem('v_user')||'null') || {name:'Usuário',email:'user@demo.com'};
+        APP.profile = JSON.parse(localStorage.getItem('v_profile')||'null') || {name:'Usuário',weight:78,height:175,age:30,gender:'m',goal:'lose',activity:'mod'};
         APP.calc = calcProfile(APP.profile);
         APP.water = APP.water||0; APP.meals=[];
         APP.session = 'bio_' + Date.now();
         save('v_session', APP.session);
         if (APP.user?.id) await syncFromSupabase(APP.user.id);
-        toast('Acesso com biometria!','success');
+        toast('✅ '+t('toast_bio_ok'),'success');
         finishAuth();
       }, 1500);
     } else {
-      toast('Acesso realizado!','success');
+      toast('✅ '+t('toast_access_ok'),'success');
       setTimeout(finishAuth, 600);
     }
   } else {
@@ -2746,8 +2658,8 @@ async function tryBiometric() {
 }
 
 async function activateBiometric() {
-  // Passkeys com Resident Keys (Google Password Manager / iOS Keychain)
-  if (isWebAuthnAvailable() && navigator.credentials) {
+  // Try real WebAuthn registration
+  if (window.PublicKeyCredential && navigator.credentials) {
     try {
       const challenge = new Uint8Array(32);
       window.crypto.getRandomValues(challenge);
@@ -2757,65 +2669,29 @@ async function activateBiometric() {
       const credential = await navigator.credentials.create({
         publicKey: {
           challenge,
-          rp: { 
-            name: 'VitalIA',
-            id: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-              ? window.location.hostname
-              : 'vital-ia-premium.vercel.app'
-          },
-          user: { 
-            id: userId, 
-            name: APP.user?.email || 'user@vitalia.app', 
-            displayName: APP.profile?.name || 'Usuario' 
-          },
-          pubKeyCredParams: [
-            { alg: -7, type: 'public-key' },   // ES256
-            { alg: -257, type: 'public-key' }  // RS256
-          ],
-          authenticatorSelection: {
-            authenticatorAttachment: 'platform',
-            residentKey: 'required',
-            requireResidentKey: true,
-            userVerification: 'required'
-          },
-          timeout: 60000,
-          attestation: 'none'
+          rp: { name: 'VitalIA', id: location.hostname || 'localhost' },
+          user: { id: userId, name: APP.user?.email || 'user', displayName: APP.profile?.name || 'Usuário' },
+          pubKeyCredParams: [{ alg: -7, type: 'public-key' }, { alg: -257, type: 'public-key' }],
+          authenticatorSelection: { userVerification:'required', residentKey: 'preferred' },
+          timeout: 30000,
         }
       });
 
       if (credential) {
-        // Salvar credencial
         const credId = btoa(String.fromCharCode(...new Uint8Array(credential.rawId)));
         localStorage.setItem('v_webauthn_id', credId);
-        localStorage.setItem('v_passkey_registered', '1');
         localStorage.setItem('v_biometric', '1');
-        
-        toast('Passkey registrado com sucesso!', 'success', 3000);
+        toast('✅ '+t('toast_bio_reg'),'success',3000);
         setTimeout(finishAuth, 1200);
         return;
       }
     } catch(e) {
-      console.log('Passkey registration error:', e.name, e.message);
-      
-      // Fallback: NotAllowedError (usuário cancelou ou sem HTTPS)
-      if (e.name === 'NotAllowedError') {
-        toast('Passkey não disponível. Usando PIN.', 'info', 2000);
-        localStorage.setItem('v_biometric', '1');
-        setTimeout(finishAuth, 1500);
-        return;
-      }
-      
-      // Outro erro: fallback para PIN
-      toast('Erro ao registrar passkey. Usando PIN.', 'warning', 2000);
-      localStorage.setItem('v_biometric', '1');
-      setTimeout(finishAuth, 1500);
-      return;
+      // WebAuthn not available or user cancelled
     }
   }
-  
-  // Fallback: Dispositivo sem suporte
-  localStorage.setItem('v_biometric', '1');
-  toast('Passkey ativado!', 'success', 3000);
+  // Fallback
+  localStorage.setItem('v_biometric','1');
+  toast('✅ '+t('toast_bio_on'),'success',3000);
   setTimeout(finishAuth, 1200);
 }
 
@@ -2917,45 +2793,25 @@ function renderRegister2() {
     <div class="auth-card">
       <h2 class="auth-title">${t('step')} 2 ${t('of')} 4 — Perfil físico</h2>
       <p class="auth-sub">Para cálculos precisos de nutrição</p>
-      <div class="input-label" style="margin-bottom:8px">📅 Data de nascimento</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
-        <div class="input-wrap" style="margin-bottom:0"><label class="input-label" style="font-size:11px">Dia</label><input id="r-day" class="input" type="number" min="1" max="31" placeholder="01" value="${APP.registerData.day||'01'}" style="text-align:center;font-size:16px;font-weight:600"></div>
-        <div class="input-wrap" style="margin-bottom:0"><label class="input-label" style="font-size:11px">Mês</label><input id="r-month" class="input" type="number" min="1" max="12" placeholder="01" value="${APP.registerData.month||'01'}" style="text-align:center;font-size:16px;font-weight:600"></div>
-        <div class="input-wrap" style="margin-bottom:0"><label class="input-label" style="font-size:11px">Ano</label><input id="r-year" class="input" type="number" min="1930" max="2015" placeholder="1994" value="${APP.registerData.year||'1994'}" style="text-align:center;font-size:16px;font-weight:600"></div>
-      </div>
       <div class="input-row">
+        <div class="input-wrap"><label class="input-label">Data de nasc.</label><input id="r-dob" class="input" type="date" value="${APP.registerData.dob||'1994-01-01'}"></div>
         <div class="input-wrap"><label class="input-label">Sexo</label><select id="r-gender" class="input"><option value="m">Masculino</option><option value="f">Feminino</option><option value="other">Prefiro não dizer</option></select></div>
       </div>
       <div class="input-row">
         <div class="input-wrap"><label class="input-label">Peso (kg)</label><input id="r-weight" class="input" type="number" placeholder="70" value="${APP.registerData.weight||''}"></div>
         <div class="input-wrap"><label class="input-label">Altura (cm)</label><input id="r-height" class="input" type="number" placeholder="170" value="${APP.registerData.height||''}"></div>
       </div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:16px">💡 Digite o dia, mês e ano sem usar o calendário</div>
       <button class="btn btn-primary btn-full" onclick="nextRegister2()" style="padding:14px">Continuar →</button>
     </div>
   </div>`;
 }
 
 function nextRegister2() {
-  const day = String(document.getElementById('r-day').value).padStart(2, '0');
-  const month = String(document.getElementById('r-month').value).padStart(2, '0');
-  const year = document.getElementById('r-year').value;
-  const gender = document.getElementById('r-gender').value;
-  const weight = document.getElementById('r-weight').value;
-  const height = document.getElementById('r-height').value;
-  
-  if (!day || !month || !year) { toast('Preencha a data completa', 'error'); return; }
-  if (parseInt(day) < 1 || parseInt(day) > 31) { toast('Dia invalido', 'error'); return; }
-  if (parseInt(month) < 1 || parseInt(month) > 12) { toast('Mes invalido', 'error'); return; }
-  if (parseInt(year) < 1930 || parseInt(year) > 2015) { toast('Ano invalido', 'error'); return; }
-  if (!weight || !height) { toast('Preencha peso e altura', 'error'); return; }
-  
-  const dob = `${year}-${month}-${day}`;
-  const age = new Date().getFullYear() - parseInt(year);
-  
-  APP.registerData = { ...APP.registerData, day, month, year, dob, gender, weight, height, age };
-  APP.authStep = 'register3';
-  renderAuth();
+  const dob=document.getElementById('r-dob').value, gender=document.getElementById('r-gender').value, weight=document.getElementById('r-weight').value, height=document.getElementById('r-height').value;
+  if(!weight||!height){toast(t('toast_fill_body'),'error');return;}
+  const age=new Date().getFullYear()-new Date(dob).getFullYear();
+  APP.registerData={...APP.registerData,dob,gender,weight,height,age};
+  APP.authStep='register3';renderAuth();
 }
 
 function renderRegister3() {
@@ -2997,93 +2853,17 @@ function renderRegister4() {
     <div class="auth-card">
       <h2 class="auth-title">${t('step')} 4 ${t('of')} 4 — Preferências</h2>
       <p class="auth-sub">Últimos ajustes</p>
-      <div class="input-label" style="margin-bottom:8px">🌍 Idioma preferido</div>
+      <div class="input-label" style="margin-bottom:8px">Idioma preferido</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
-        ${t('languages').map(l=>`<div class="lang-option ${APP.lang===l.code?'active':''} " id="lang-${l.code}" onclick="selectLanguageReg('${l.code}')"><span class="lang-flag">${l.flag}</span><span class="lang-name">${l.name}</span></div>`).join('')}
+        ${t('languages').map(l=>`<div class="lang-option ${APP.lang===l.code?'active':''}" onclick="APP.lang='${l.code}';save('v_lang','${l.code}');renderAuth()"><span class="lang-flag">${l.flag}</span><span class="lang-name">${l.name}</span></div>`).join('')}
       </div>
-      <div class="input-label" style="margin-bottom:8px">🔔 Notificações</div>
+      <div class="input-label" style="margin-bottom:8px">Notificações</div>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
         ${[['push','📱','Push no celular'],['whatsapp','💬','WhatsApp'],['sms','📱','SMS'],['email','📧','Email'],['telegram','✈️','Telegram']].map(([v,e,n])=>`<label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px;border-radius:10px;border:1px solid ${v==='telegram'?'rgba(34,158,217,.25)':'var(--border)'};background:${v==='telegram'?'rgba(34,158,217,.06)':'var(--surface2)'}"><input type="checkbox" id="notif-${v}" style="accent-color:${v==='telegram'?'#229ED9':'var(--green)'}" ${v==='push'?'checked':''}> <span style="font-size:16px">${e}</span> <span style="font-size:13px">${n}</span></label>`).join('')}
       </div>
-      
-      <div class="input-label" style="margin-bottom:8px">🔐 Segurança</div>
-      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);margin-bottom:16px">
-        <input type="checkbox" id="biometric-enable" style="accent-color:var(--green)" checked> 
-        <span style="font-size:14px">Ativar biometria após login</span>
-      </label>
-      
       <button class="btn btn-primary btn-full" onclick="completeRegister()" style="padding:14px">🚀 Criar minha conta</button>
     </div>
   </div>`;
-}
-
-
-function activateBiometric() {
-  if (!window.PublicKeyCredential) {
-    toast('Biometria nao suportada neste dispositivo', 'error');
-    return;
-  }
-  
-  const options = {
-    challenge: new Uint8Array(32),
-    rp: { name: "VitalIA" },
-    user: {
-      id: new Uint8Array(16),
-      name: APP.user?.email || "user@vitalia.app",
-      displayName: APP.user?.name || "User"
-    },
-    pubKeyCredParams: [{ alg: -7, type: "public-key" }],
-    timeout: 60000,
-    attestation: "direct"
-  };
-  
-  navigator.credentials.create({ publicKey: options })
-    .then(credential => {
-      if (credential) {
-        localStorage.setItem('v_biometric', JSON.stringify(credential));
-        toast('Biometria ativada com sucesso!', 'success');
-        finishAuth();
-      }
-    })
-    .catch(err => {
-      console.log('Biometria erro:', err);
-      toast('Nao foi possivel ativar biometria', 'error');
-    });
-}
-
-function tryBiometric() {
-  const bioData = localStorage.getItem('v_biometric');
-  if (!bioData) {
-    toast('Biometria nao configurada', 'error');
-    return;
-  }
-  
-  if (!window.PublicKeyCredential) {
-    toast('Biometria nao suportada', 'error');
-    return;
-  }
-  
-  const options = {
-    challenge: new Uint8Array(32),
-    timeout: 60000,
-    userVerification: "preferred"
-  };
-  
-  navigator.credentials.get({ publicKey: options })
-    .then(assertion => {
-      if (assertion) {
-        APP.user = JSON.parse(localStorage.getItem('v_user') || '{}');
-        APP.profile = JSON.parse(localStorage.getItem('v_profile') || '{}');
-        APP.session = 'bio_' + Date.now();
-        save('v_session', APP.session);
-        toast('Login com biometria realizado!', 'success');
-        setTimeout(finishAuth, 500);
-      }
-    })
-    .catch(err => {
-      console.log('Biometria erro:', err);
-      toast('Falha na autenticacao biometrica', 'error');
-    });
 }
 
 async function completeRegister() {
