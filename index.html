@@ -918,78 +918,12 @@ async function sbSaveGamificacao(userId, xp, streak) {
 }
 
 // ── Sincronização ─────────────────────
-async function syncFromSupabase(userId) {
-  try {
-    const [perfil, agua, pesos, gami, refeicoes] = await Promise.all([
-      sbGetPerfil(userId),
-      sbGetAgua(userId),
-      sbGetPesos(userId),
-      sbGetGamificacao(userId),
-      sbGetRefeicoes(userId)
-    ]);
+// syncFromSupabase removida
 
-    if (perfil) {
-      APP.profile = {
-        name: perfil.nome || APP.profile?.name || 'Usuário',
-        weight: perfil.peso || 78,
-        height: perfil.altura || 175,
-        age: perfil.idade || 30,
-        gender: perfil.genero || 'm',
-        goal: perfil.objetivo || 'lose',
-        activity: perfil.atividade || 'mod',
-        restrictions: []
-      };
-      APP.calc = calcProfile(APP.profile);
-    }
-
-    APP.water = agua || 0;
-    APP.weightHistory = pesos.length ? pesos : [{ date: new Date().toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit'}), peso: APP.profile?.weight || 78 }];
-    APP.xp = gami.xp || 0;
-    APP.streak = gami.streak || 0;
-    APP.meals = (refeicoes || []).map(r => ({
-      name: r.nome, emoji: r.emoji || '🍽️',
-      cal: r.calorias || 0, prot: r.proteina || 0,
-      carb: r.carbo || 0, fat: r.gordura || 0,
-      time: r.hora?.slice(0,5) || '12:00', type: r.tipo || 'almoco'
-    }));
-
-    // Save local cache
-    save('v_profile', APP.profile);
-    save('v_weights', APP.weightHistory);
-    localStorage.setItem('v_xp', APP.xp);
-    localStorage.setItem('v_streak', APP.streak);
-  } catch (e) {
-    console.warn('Sync error:', e);
-  }
-}
-
-async function syncToSupabase() {
-  const user = await sbGetUser();
-  if (!user) return;
-  try {
-    await Promise.all([
-      sbSaveAgua(user.id, APP.water),
-      sbSaveGamificacao(user.id, APP.xp, APP.streak),
-    ]);
-    if (APP.profile) {
-      await sbSavePerfil(user.id, {
-        nome: APP.profile.name,
-        peso: APP.profile.weight,
-        altura: APP.profile.height,
-        idade: APP.profile.age,
-        genero: APP.profile.gender,
-        objetivo: APP.profile.goal,
-        atividade: APP.profile.activity,
-        email: APP.user?.email
-      });
-    }
-  } catch (e) {
-    console.warn('Sync to Supabase error:', e);
-  }
-}
+// syncToSupabase removida
 
 // Auto-sync a cada 30 segundos
-setInterval(syncToSupabase, 30000);
+// setInterval syncToSupabase removido
 </script>
 
 <script>
@@ -2578,7 +2512,7 @@ async function doLogin() {
 
   // Load data from Supabase
   toast('🔄 '+t('toast_loading'), 'info', 2000);
-  await syncFromSupabase(user.id);
+  // syncFromSupabase removido
 
   APP.authStep = localStorage.getItem('v_biometric') ? 'app' : 'biometric';
   if (APP.authStep === 'biometric') { APP.authStep = 'biometric'; renderAuth(); }
@@ -2627,7 +2561,7 @@ async function tryBiometric() {
           APP.session = 'bio_' + Date.now();
           save('v_session', APP.session);
           // Sync from Supabase if user has id
-          if (APP.user?.id) await syncFromSupabase(APP.user.id);
+          if (APP.user?.id) // syncFromSupabase removido
           finishAuth();
         }, 600);
         return;
@@ -2648,7 +2582,7 @@ async function tryBiometric() {
         APP.water = APP.water||0; APP.meals=[];
         APP.session = 'bio_' + Date.now();
         save('v_session', APP.session);
-        if (APP.user?.id) await syncFromSupabase(APP.user.id);
+        if (APP.user?.id) // syncFromSupabase removido
         toast('✅ '+t('toast_bio_ok'),'success');
         finishAuth();
       }, 1500);
