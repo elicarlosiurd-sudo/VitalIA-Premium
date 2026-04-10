@@ -1,0 +1,407 @@
+{
+  "locale": "es-ES",
+  "version": "1.0",
+  "receitas": [
+    {
+      "id": 1,
+      "locale": "es-ES",
+      "title": "Avena con Plátano y Miel",
+      "shortDescription": "Desayuno vegano rico en fibra y energía",
+      "mealType": "breakfast",
+      "dietGroups": ["vegan", "vegetarian"],
+      "restrictions": ["gluten-free"],
+      "goals": ["weight-loss", "energy"],
+      "healthProfiles": [],
+      "nutritionFocus": ["high-fiber", "low-glycemic"],
+      "prepTimeMinutes": 10,
+      "difficulty": "easy",
+      "servings": 1,
+      "ingredients": [
+        {"name": "Copos de avena", "amount": 50, "unit": "g"},
+        {"name": "Plátano", "amount": 1, "unit": "unidad"},
+        {"name": "Miel", "amount": 1, "unit": "cucharada"},
+        {"name": "Leche de almendras", "amount": 200, "unit": "ml"},
+        {"name": "Canela", "amount": 0.5, "unit": "cucharadita"}
+      ],
+      "preparationSteps": [
+        "1. Vierte la leche de almendras en una cacerola",
+        "2. Añade la avena y revuelve constantemente",
+        "3. Cocina durante 5 minutos a fuego medio",
+        "4. Corta el plátano en rodajas",
+        "5. Vierte la avena en un tazón",
+        "6. Coloca el plátano encima",
+        "7. Rocía con miel y espolvorea canela"
+      ],
+      "nutritionPerServing": {
+        "calories": 280,
+        "protein": 8,
+        "carbohydrates": 52,
+        "fat": 4,
+        "fiber": 6
+      },
+      "substitutions": ["Leche de coco en lugar de almendras", "Manzana en lugar de plátano"],
+      "tips": "Prepara la noche anterior para ahorrar tiempo por la mañana"
+    },
+    {
+      "id": 2,
+      "locale": "es-ES",
+      "title": "Tortilla de Claras con Espinacas",
+      "shortDescription": "Desayuno proteico para ganancia muscular",
+      "mealType": "breakfast",
+      "dietGroups": ["omnivore", "vegetarian"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["muscle-gain", "maintenance"],
+      "healthProfiles": [],
+      "nutritionFocus": ["high-protein", "low-fat"],
+      "prepTimeMinutes": 12,
+      "difficulty": "easy",
+      "servings": 1,
+      "ingredients": [
+        {"name": "Claras de huevo", "amount": 4, "unit": "unidad"},
+        {"name": "Espinacas frescas", "amount": 100, "unit": "g"},
+        {"name": "Cebolla", "amount": 0.5, "unit": "unidad"},
+        {"name": "Aceite de oliva", "amount": 1, "unit": "cucharadita"},
+        {"name": "Sal y pimienta", "amount": 1, "unit": "al gusto"}
+      ],
+      "preparationSteps": [
+        "1. Pica la cebolla y las espinacas",
+        "2. Calienta el aceite en una sartén antiadherente",
+        "3. Sofríe la cebolla hasta que esté translúcida",
+        "4. Añade las espinacas y deja que se marchiten",
+        "5. Bate las claras con sal y pimienta",
+        "6. Vierte las claras sobre los vegetales",
+        "7. Cocina hasta que cuaje, doblando la tortilla por la mitad"
+      ],
+      "nutritionPerServing": {
+        "calories": 145,
+        "protein": 28,
+        "carbohydrates": 5,
+        "fat": 2,
+        "fiber": 1
+      },
+      "substitutions": ["Brócoli en lugar de espinacas", "Tomate en lugar de cebolla"],
+      "tips": "Usa sartén antiadherente para no necesitar aceite extra"
+    },
+    {
+      "id": 3,
+      "locale": "es-ES",
+      "title": "Batido de Frutos Rojos",
+      "shortDescription": "Merienda vegana rica en antioxidantes",
+      "mealType": "snack",
+      "dietGroups": ["vegan", "vegetarian"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["energy", "weight-loss"],
+      "healthProfiles": ["menstrual"],
+      "nutritionFocus": ["anti-inflammatory", "high-fiber"],
+      "prepTimeMinutes": 5,
+      "difficulty": "easy",
+      "servings": 1,
+      "ingredients": [
+        {"name": "Fresa", "amount": 100, "unit": "g"},
+        {"name": "Arándano", "amount": 80, "unit": "g"},
+        {"name": "Frambuesa", "amount": 60, "unit": "g"},
+        {"name": "Leche de coco", "amount": 200, "unit": "ml"},
+        {"name": "Miel", "amount": 1, "unit": "cucharada"}
+      ],
+      "preparationSteps": [
+        "1. Coloca los frutos rojos en la licuadora",
+        "2. Añade la leche de coco",
+        "3. Añade la miel",
+        "4. Licúa hasta que esté homogéneo",
+        "5. Sirve inmediatamente con hielo"
+      ],
+      "nutritionPerServing": {
+        "calories": 210,
+        "protein": 3,
+        "carbohydrates": 42,
+        "fat": 5,
+        "fiber": 5
+      },
+      "substitutions": ["Leche de almendras en lugar de coco", "Azúcar de coco en lugar de miel"],
+      "tips": "Congela los frutos para una textura más cremosa"
+    },
+    {
+      "id": 4,
+      "locale": "es-ES",
+      "title": "Pollo a la Parrilla con Brócoli y Batata",
+      "shortDescription": "Almuerzo equilibrado para ganancia muscular",
+      "mealType": "lunch",
+      "dietGroups": ["omnivore"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["muscle-gain", "maintenance"],
+      "healthProfiles": [],
+      "nutritionFocus": ["high-protein", "high-carb"],
+      "prepTimeMinutes": 30,
+      "difficulty": "easy",
+      "servings": 2,
+      "ingredients": [
+        {"name": "Pechuga de pollo", "amount": 300, "unit": "g"},
+        {"name": "Brócoli", "amount": 200, "unit": "g"},
+        {"name": "Batata", "amount": 250, "unit": "g"},
+        {"name": "Aceite de oliva", "amount": 2, "unit": "cucharada"},
+        {"name": "Limón", "amount": 1, "unit": "unidad"},
+        {"name": "Sal y pimienta", "amount": 1, "unit": "al gusto"}
+      ],
+      "preparationSteps": [
+        "1. Corta la batata en cubos",
+        "2. Asa la batata a 180°C durante 20 minutos",
+        "3. Sazona el pollo con sal, pimienta y limón",
+        "4. Asa el pollo 12 minutos de cada lado",
+        "5. Cuece el brócoli al vapor durante 10 minutos",
+        "6. Rocía todo con aceite de oliva"
+      ],
+      "nutritionPerServing": {
+        "calories": 420,
+        "protein": 45,
+        "carbohydrates": 35,
+        "fat": 8,
+        "fiber": 5
+      },
+      "substitutions": ["Salmón en lugar de pollo", "Zanahoria en lugar de brócoli"],
+      "tips": "Prepara el doble para tener comida lista"
+    },
+    {
+      "id": 5,
+      "locale": "es-ES",
+      "title": "Ensalada de Quinoa con Garbanzos",
+      "shortDescription": "Almuerzo vegetariano rico en hierro",
+      "mealType": "lunch",
+      "dietGroups": ["vegetarian", "vegan"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["weight-loss", "maintenance"],
+      "healthProfiles": ["pregnant", "menstrual"],
+      "nutritionFocus": ["high-iron", "high-protein", "high-fiber"],
+      "prepTimeMinutes": 20,
+      "difficulty": "easy",
+      "servings": 2,
+      "ingredients": [
+        {"name": "Quinoa cocida", "amount": 150, "unit": "g"},
+        {"name": "Garbanzos cocidos", "amount": 150, "unit": "g"},
+        {"name": "Tomate", "amount": 1, "unit": "unidad"},
+        {"name": "Pepino", "amount": 1, "unit": "unidad"},
+        {"name": "Lechuga", "amount": 100, "unit": "g"},
+        {"name": "Limón", "amount": 1, "unit": "unidad"},
+        {"name": "Aceite de oliva", "amount": 2, "unit": "cucharada"}
+      ],
+      "preparationSteps": [
+        "1. Cocina la quinoa según las instrucciones",
+        "2. Calienta los garbanzos si están fríos",
+        "3. Pica el tomate, pepino y lechuga",
+        "4. Mezcla todo en un tazón grande",
+        "5. Aliña con jugo de limón y aceite",
+        "6. Deja reposar 10 minutos antes de servir"
+      ],
+      "nutritionPerServing": {
+        "calories": 380,
+        "protein": 14,
+        "carbohydrates": 52,
+        "fat": 10,
+        "fiber": 10
+      },
+      "substitutions": ["Lenteja en lugar de garbanzos", "Arroz integral en lugar de quinoa"],
+      "tips": "Prepara la noche anterior para facilitar el almuerzo"
+    },
+    {
+      "id": 6,
+      "locale": "es-ES",
+      "title": "Salmón al Horno con Limón",
+      "shortDescription": "Almuerzo antiinflamatorio para recuperación",
+      "mealType": "lunch",
+      "dietGroups": ["omnivore", "pescatarian"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["maintenance", "energy"],
+      "healthProfiles": ["postpartum", "menstrual"],
+      "nutritionFocus": ["anti-inflammatory", "high-omega3", "high-protein"],
+      "prepTimeMinutes": 25,
+      "difficulty": "easy",
+      "servings": 2,
+      "ingredients": [
+        {"name": "Filete de salmón", "amount": 300, "unit": "g"},
+        {"name": "Limón", "amount": 2, "unit": "unidad"},
+        {"name": "Aceite de oliva", "amount": 2, "unit": "cucharada"},
+        {"name": "Ajo", "amount": 2, "unit": "diente"},
+        {"name": "Sal y pimienta", "amount": 1, "unit": "al gusto"},
+        {"name": "Brócoli", "amount": 200, "unit": "g"}
+      ],
+      "preparationSteps": [
+        "1. Precalienta el horno a 180°C",
+        "2. Coloca el salmón en papel de aluminio",
+        "3. Exprime el limón sobre el salmón",
+        "4. Añade ajo picado, sal y pimienta",
+        "5. Rocía con aceite",
+        "6. Cierra el papel de aluminio y asa durante 20 minutos",
+        "7. Cuece el brócoli al vapor"
+      ],
+      "nutritionPerServing": {
+        "calories": 380,
+        "protein": 42,
+        "carbohydrates": 8,
+        "fat": 20,
+        "fiber": 3
+      },
+      "substitutions": ["Trucha en lugar de salmón", "Zanahoria en lugar de brócoli"],
+      "tips": "El salmón es rico en omega-3, excelente para la inflamación"
+    },
+    {
+      "id": 7,
+      "locale": "es-ES",
+      "title": "Pastel de Plátano Sin Gluten",
+      "shortDescription": "Merienda sin gluten para gestante",
+      "mealType": "snack",
+      "dietGroups": ["vegetarian", "vegan"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["energy", "maintenance"],
+      "healthProfiles": ["pregnant"],
+      "nutritionFocus": ["high-fiber", "low-glycemic"],
+      "prepTimeMinutes": 35,
+      "difficulty": "medium",
+      "servings": 8,
+      "ingredients": [
+        {"name": "Plátano", "amount": 3, "unit": "unidad"},
+        {"name": "Harina de almendras", "amount": 150, "unit": "g"},
+        {"name": "Huevos", "amount": 3, "unit": "unidad"},
+        {"name": "Miel", "amount": 3, "unit": "cucharada"},
+        {"name": "Polvo de hornear", "amount": 1, "unit": "cucharadita"},
+        {"name": "Canela", "amount": 1, "unit": "cucharadita"}
+      ],
+      "preparationSteps": [
+        "1. Precalienta el horno a 180°C",
+        "2. Machaca los plátanos en un tazón",
+        "3. Bate los huevos con la miel",
+        "4. Mezcla los huevos con los plátanos",
+        "5. Añade la harina de almendras, polvo de hornear y canela",
+        "6. Vierte en un molde engrasado",
+        "7. Asa durante 30 minutos hasta que esté dorado"
+      ],
+      "nutritionPerServing": {
+        "calories": 180,
+        "protein": 6,
+        "carbohydrates": 20,
+        "fat": 8,
+        "fiber": 3
+      },
+      "substitutions": ["Harina de coco en lugar de almendras", "Azúcar de coco en lugar de miel"],
+      "tips": "Las gestantes deben evitar alimentos muy procesados"
+    },
+    {
+      "id": 8,
+      "locale": "es-ES",
+      "title": "Arroz Integral con Frijoles y Col Rizada",
+      "shortDescription": "Cena ligera para período menstrual",
+      "mealType": "dinner",
+      "dietGroups": ["vegan", "vegetarian"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["weight-loss", "maintenance"],
+      "healthProfiles": ["menstrual"],
+      "nutritionFocus": ["high-iron", "high-magnesium", "anti-inflammatory"],
+      "prepTimeMinutes": 40,
+      "difficulty": "easy",
+      "servings": 2,
+      "ingredients": [
+        {"name": "Arroz integral", "amount": 150, "unit": "g"},
+        {"name": "Frijoles cocidos", "amount": 150, "unit": "g"},
+        {"name": "Col rizada", "amount": 150, "unit": "g"},
+        {"name": "Cebolla", "amount": 1, "unit": "unidad"},
+        {"name": "Ajo", "amount": 2, "unit": "diente"},
+        {"name": "Aceite de oliva", "amount": 1, "unit": "cucharada"}
+      ],
+      "preparationSteps": [
+        "1. Cocina el arroz integral según las instrucciones",
+        "2. Sofríe la cebolla y el ajo en aceite",
+        "3. Añade los frijoles y deja que se calienten",
+        "4. Pica la col rizada y sofríe hasta que se marchite",
+        "5. Mezcla todo en un plato",
+        "6. Sirve caliente"
+      ],
+      "nutritionPerServing": {
+        "calories": 320,
+        "protein": 12,
+        "carbohydrates": 55,
+        "fat": 5,
+        "fiber": 8
+      },
+      "substitutions": ["Lenteja en lugar de frijoles", "Brócoli en lugar de col rizada"],
+      "tips": "El hierro y el magnesio ayudan a aliviar los cólicos menstruales"
+    },
+    {
+      "id": 9,
+      "locale": "es-ES",
+      "title": "Pechuga de Pollo con Calabaza",
+      "shortDescription": "Cena proteica para mantenimiento",
+      "mealType": "dinner",
+      "dietGroups": ["omnivore"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["maintenance", "muscle-gain"],
+      "healthProfiles": [],
+      "nutritionFocus": ["high-protein", "low-fat"],
+      "prepTimeMinutes": 35,
+      "difficulty": "easy",
+      "servings": 2,
+      "ingredients": [
+        {"name": "Pechuga de pollo", "amount": 300, "unit": "g"},
+        {"name": "Calabaza", "amount": 300, "unit": "g"},
+        {"name": "Cebolla", "amount": 1, "unit": "unidad"},
+        {"name": "Caldo de verduras", "amount": 500, "unit": "ml"},
+        {"name": "Sal y pimienta", "amount": 1, "unit": "al gusto"}
+      ],
+      "preparationSteps": [
+        "1. Corta el pollo en cubos",
+        "2. Corta la calabaza en cubos",
+        "3. Pica la cebolla",
+        "4. Sofríe la cebolla en una cacerola",
+        "5. Añade el pollo y dora",
+        "6. Añade la calabaza y el caldo",
+        "7. Cocina durante 25 minutos hasta que esté tierno"
+      ],
+      "nutritionPerServing": {
+        "calories": 280,
+        "protein": 40,
+        "carbohydrates": 20,
+        "fat": 4,
+        "fiber": 4
+      },
+      "substitutions": ["Zanahoria en lugar de calabaza", "Pescado en lugar de pollo"],
+      "tips": "La calabaza es rica en vitamina A para la inmunidad"
+    },
+    {
+      "id": 10,
+      "locale": "es-ES",
+      "title": "Batido de Proteína Pre-Entrenamiento",
+      "shortDescription": "Pre-entrenamiento alto en carbohidratos y energía",
+      "mealType": "pre-workout",
+      "dietGroups": ["omnivore", "vegetarian"],
+      "restrictions": ["gluten-free"],
+      "goals": ["energy", "muscle-gain"],
+      "healthProfiles": [],
+      "nutritionFocus": ["high-carb", "quick-energy", "high-protein"],
+      "prepTimeMinutes": 5,
+      "difficulty": "easy",
+      "servings": 1,
+      "ingredients": [
+        {"name": "Proteína de suero", "amount": 30, "unit": "g"},
+        {"name": "Plátano", "amount": 1, "unit": "unidad"},
+        {"name": "Miel", "amount": 1, "unit": "cucharada"},
+        {"name": "Leche desnatada", "amount": 200, "unit": "ml"},
+        {"name": "Hielo", "amount": 100, "unit": "g"}
+      ],
+      "preparationSteps": [
+        "1. Coloca la leche en la licuadora",
+        "2. Añade el plátano cortado",
+        "3. Añade la proteína de suero",
+        "4. Añade la miel",
+        "5. Añade hielo",
+        "6. Licúa hasta que esté homogéneo",
+        "7. Sirve inmediatamente"
+      ],
+      "nutritionPerServing": {
+        "calories": 310,
+        "protein": 32,
+        "carbohydrates": 38,
+        "fat": 2,
+        "fiber": 2
+      },
+      "substitutions": ["Manzana en lugar de plátano", "Azúcar de coco en lugar de miel"],
+      "tips": "Consumir 30-60 minutos antes del entrenamiento"
+    }
+  ]
+}

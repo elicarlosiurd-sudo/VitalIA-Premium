@@ -1,0 +1,407 @@
+{
+  "locale": "en-US",
+  "version": "1.0",
+  "receitas": [
+    {
+      "id": 1,
+      "locale": "en-US",
+      "title": "Oatmeal with Banana and Honey",
+      "shortDescription": "Vegan breakfast rich in fiber and energy",
+      "mealType": "breakfast",
+      "dietGroups": ["vegan", "vegetarian"],
+      "restrictions": ["gluten-free"],
+      "goals": ["weight-loss", "energy"],
+      "healthProfiles": [],
+      "nutritionFocus": ["high-fiber", "low-glycemic"],
+      "prepTimeMinutes": 10,
+      "difficulty": "easy",
+      "servings": 1,
+      "ingredients": [
+        {"name": "Rolled oats", "amount": 50, "unit": "g"},
+        {"name": "Banana", "amount": 1, "unit": "unit"},
+        {"name": "Honey", "amount": 1, "unit": "tbsp"},
+        {"name": "Almond milk", "amount": 200, "unit": "ml"},
+        {"name": "Cinnamon", "amount": 0.5, "unit": "tsp"}
+      ],
+      "preparationSteps": [
+        "1. Pour almond milk into a pan",
+        "2. Add oats and stir constantly",
+        "3. Cook for 5 minutes over medium heat",
+        "4. Slice the banana",
+        "5. Pour oatmeal into a bowl",
+        "6. Top with banana slices",
+        "7. Drizzle with honey and sprinkle cinnamon"
+      ],
+      "nutritionPerServing": {
+        "calories": 280,
+        "protein": 8,
+        "carbohydrates": 52,
+        "fat": 4,
+        "fiber": 6
+      },
+      "substitutions": ["Coconut milk instead of almond milk", "Apple instead of banana"],
+      "tips": "Prepare the night before for quick morning breakfast"
+    },
+    {
+      "id": 2,
+      "locale": "en-US",
+      "title": "Egg White Omelet with Spinach",
+      "shortDescription": "Protein-rich breakfast for muscle gain",
+      "mealType": "breakfast",
+      "dietGroups": ["omnivore", "vegetarian"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["muscle-gain", "maintenance"],
+      "healthProfiles": [],
+      "nutritionFocus": ["high-protein", "low-fat"],
+      "prepTimeMinutes": 12,
+      "difficulty": "easy",
+      "servings": 1,
+      "ingredients": [
+        {"name": "Egg whites", "amount": 4, "unit": "unit"},
+        {"name": "Fresh spinach", "amount": 100, "unit": "g"},
+        {"name": "Onion", "amount": 0.5, "unit": "unit"},
+        {"name": "Olive oil", "amount": 1, "unit": "tsp"},
+        {"name": "Salt and pepper", "amount": 1, "unit": "to taste"}
+      ],
+      "preparationSteps": [
+        "1. Chop onion and spinach",
+        "2. Heat olive oil in a non-stick skillet",
+        "3. Sauté onion until translucent",
+        "4. Add spinach and let it wilt",
+        "5. Beat egg whites with salt and pepper",
+        "6. Pour egg whites over vegetables",
+        "7. Cook until set, fold omelet in half"
+      ],
+      "nutritionPerServing": {
+        "calories": 145,
+        "protein": 28,
+        "carbohydrates": 5,
+        "fat": 2,
+        "fiber": 1
+      },
+      "substitutions": ["Broccoli instead of spinach", "Tomato instead of onion"],
+      "tips": "Use non-stick pan to avoid extra oil"
+    },
+    {
+      "id": 3,
+      "locale": "en-US",
+      "title": "Red Berries Smoothie",
+      "shortDescription": "Vegan snack rich in antioxidants",
+      "mealType": "snack",
+      "dietGroups": ["vegan", "vegetarian"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["energy", "weight-loss"],
+      "healthProfiles": ["menstrual"],
+      "nutritionFocus": ["anti-inflammatory", "high-fiber"],
+      "prepTimeMinutes": 5,
+      "difficulty": "easy",
+      "servings": 1,
+      "ingredients": [
+        {"name": "Strawberry", "amount": 100, "unit": "g"},
+        {"name": "Blueberry", "amount": 80, "unit": "g"},
+        {"name": "Raspberry", "amount": 60, "unit": "g"},
+        {"name": "Coconut milk", "amount": 200, "unit": "ml"},
+        {"name": "Honey", "amount": 1, "unit": "tbsp"}
+      ],
+      "preparationSteps": [
+        "1. Place berries in blender",
+        "2. Add coconut milk",
+        "3. Add honey",
+        "4. Blend until smooth",
+        "5. Serve immediately with ice"
+      ],
+      "nutritionPerServing": {
+        "calories": 210,
+        "protein": 3,
+        "carbohydrates": 42,
+        "fat": 5,
+        "fiber": 5
+      },
+      "substitutions": ["Almond milk instead of coconut milk", "Coconut sugar instead of honey"],
+      "tips": "Freeze berries for creamier texture"
+    },
+    {
+      "id": 4,
+      "locale": "en-US",
+      "title": "Grilled Chicken with Broccoli and Sweet Potato",
+      "shortDescription": "Balanced lunch for muscle gain",
+      "mealType": "lunch",
+      "dietGroups": ["omnivore"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["muscle-gain", "maintenance"],
+      "healthProfiles": [],
+      "nutritionFocus": ["high-protein", "high-carb"],
+      "prepTimeMinutes": 30,
+      "difficulty": "easy",
+      "servings": 2,
+      "ingredients": [
+        {"name": "Chicken breast", "amount": 300, "unit": "g"},
+        {"name": "Broccoli", "amount": 200, "unit": "g"},
+        {"name": "Sweet potato", "amount": 250, "unit": "g"},
+        {"name": "Olive oil", "amount": 2, "unit": "tbsp"},
+        {"name": "Lemon", "amount": 1, "unit": "unit"},
+        {"name": "Salt and pepper", "amount": 1, "unit": "to taste"}
+      ],
+      "preparationSteps": [
+        "1. Cut sweet potato into cubes",
+        "2. Roast sweet potato at 180°C for 20 minutes",
+        "3. Season chicken with salt, pepper and lemon",
+        "4. Grill chicken 12 minutes each side",
+        "5. Steam broccoli for 10 minutes",
+        "6. Drizzle everything with olive oil"
+      ],
+      "nutritionPerServing": {
+        "calories": 420,
+        "protein": 45,
+        "carbohydrates": 35,
+        "fat": 8,
+        "fiber": 5
+      },
+      "substitutions": ["Salmon instead of chicken", "Carrot instead of broccoli"],
+      "tips": "Prepare double portion for meal prep"
+    },
+    {
+      "id": 5,
+      "locale": "en-US",
+      "title": "Quinoa Salad with Chickpeas",
+      "shortDescription": "Vegetarian lunch rich in iron",
+      "mealType": "lunch",
+      "dietGroups": ["vegetarian", "vegan"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["weight-loss", "maintenance"],
+      "healthProfiles": ["pregnant", "menstrual"],
+      "nutritionFocus": ["high-iron", "high-protein", "high-fiber"],
+      "prepTimeMinutes": 20,
+      "difficulty": "easy",
+      "servings": 2,
+      "ingredients": [
+        {"name": "Cooked quinoa", "amount": 150, "unit": "g"},
+        {"name": "Cooked chickpeas", "amount": 150, "unit": "g"},
+        {"name": "Tomato", "amount": 1, "unit": "unit"},
+        {"name": "Cucumber", "amount": 1, "unit": "unit"},
+        {"name": "Lettuce", "amount": 100, "unit": "g"},
+        {"name": "Lemon", "amount": 1, "unit": "unit"},
+        {"name": "Olive oil", "amount": 2, "unit": "tbsp"}
+      ],
+      "preparationSteps": [
+        "1. Cook quinoa according to instructions",
+        "2. Warm chickpeas if cold",
+        "3. Chop tomato, cucumber and lettuce",
+        "4. Mix everything in a large bowl",
+        "5. Season with lemon juice and olive oil",
+        "6. Let rest 10 minutes before serving"
+      ],
+      "nutritionPerServing": {
+        "calories": 380,
+        "protein": 14,
+        "carbohydrates": 52,
+        "fat": 10,
+        "fiber": 10
+      },
+      "substitutions": ["Lentil instead of chickpeas", "Brown rice instead of quinoa"],
+      "tips": "Prepare the day before for easy lunch"
+    },
+    {
+      "id": 6,
+      "locale": "en-US",
+      "title": "Baked Salmon with Lemon",
+      "shortDescription": "Anti-inflammatory lunch for recovery",
+      "mealType": "lunch",
+      "dietGroups": ["omnivore", "pescatarian"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["maintenance", "energy"],
+      "healthProfiles": ["postpartum", "menstrual"],
+      "nutritionFocus": ["anti-inflammatory", "high-omega3", "high-protein"],
+      "prepTimeMinutes": 25,
+      "difficulty": "easy",
+      "servings": 2,
+      "ingredients": [
+        {"name": "Salmon fillet", "amount": 300, "unit": "g"},
+        {"name": "Lemon", "amount": 2, "unit": "unit"},
+        {"name": "Olive oil", "amount": 2, "unit": "tbsp"},
+        {"name": "Garlic", "amount": 2, "unit": "clove"},
+        {"name": "Salt and pepper", "amount": 1, "unit": "to taste"},
+        {"name": "Broccoli", "amount": 200, "unit": "g"}
+      ],
+      "preparationSteps": [
+        "1. Preheat oven to 180°C",
+        "2. Place salmon on aluminum foil",
+        "3. Squeeze lemon over salmon",
+        "4. Add minced garlic, salt and pepper",
+        "5. Drizzle with olive oil",
+        "6. Wrap foil and bake 20 minutes",
+        "7. Steam broccoli"
+      ],
+      "nutritionPerServing": {
+        "calories": 380,
+        "protein": 42,
+        "carbohydrates": 8,
+        "fat": 20,
+        "fiber": 3
+      },
+      "substitutions": ["Trout instead of salmon", "Carrot instead of broccoli"],
+      "tips": "Salmon is rich in omega-3, great for inflammation"
+    },
+    {
+      "id": 7,
+      "locale": "en-US",
+      "title": "Gluten-Free Banana Cake",
+      "shortDescription": "Gluten-free snack for pregnant women",
+      "mealType": "snack",
+      "dietGroups": ["vegetarian", "vegan"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["energy", "maintenance"],
+      "healthProfiles": ["pregnant"],
+      "nutritionFocus": ["high-fiber", "low-glycemic"],
+      "prepTimeMinutes": 35,
+      "difficulty": "medium",
+      "servings": 8,
+      "ingredients": [
+        {"name": "Banana", "amount": 3, "unit": "unit"},
+        {"name": "Almond flour", "amount": 150, "unit": "g"},
+        {"name": "Eggs", "amount": 3, "unit": "unit"},
+        {"name": "Honey", "amount": 3, "unit": "tbsp"},
+        {"name": "Baking powder", "amount": 1, "unit": "tsp"},
+        {"name": "Cinnamon", "amount": 1, "unit": "tsp"}
+      ],
+      "preparationSteps": [
+        "1. Preheat oven to 180°C",
+        "2. Mash bananas in a bowl",
+        "3. Beat eggs with honey",
+        "4. Mix eggs with bananas",
+        "5. Add almond flour, baking powder and cinnamon",
+        "6. Pour into greased pan",
+        "7. Bake 30 minutes until golden"
+      ],
+      "nutritionPerServing": {
+        "calories": 180,
+        "protein": 6,
+        "carbohydrates": 20,
+        "fat": 8,
+        "fiber": 3
+      },
+      "substitutions": ["Coconut flour instead of almond flour", "Coconut sugar instead of honey"],
+      "tips": "Pregnant women should avoid overly processed foods"
+    },
+    {
+      "id": 8,
+      "locale": "en-US",
+      "title": "Brown Rice with Beans and Kale",
+      "shortDescription": "Light dinner for menstrual period",
+      "mealType": "dinner",
+      "dietGroups": ["vegan", "vegetarian"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["weight-loss", "maintenance"],
+      "healthProfiles": ["menstrual"],
+      "nutritionFocus": ["high-iron", "high-magnesium", "anti-inflammatory"],
+      "prepTimeMinutes": 40,
+      "difficulty": "easy",
+      "servings": 2,
+      "ingredients": [
+        {"name": "Brown rice", "amount": 150, "unit": "g"},
+        {"name": "Cooked beans", "amount": 150, "unit": "g"},
+        {"name": "Kale", "amount": 150, "unit": "g"},
+        {"name": "Onion", "amount": 1, "unit": "unit"},
+        {"name": "Garlic", "amount": 2, "unit": "clove"},
+        {"name": "Olive oil", "amount": 1, "unit": "tbsp"}
+      ],
+      "preparationSteps": [
+        "1. Cook brown rice according to instructions",
+        "2. Sauté onion and garlic in olive oil",
+        "3. Add beans and warm through",
+        "4. Chop kale and sauté until wilted",
+        "5. Mix everything on a plate",
+        "6. Serve hot"
+      ],
+      "nutritionPerServing": {
+        "calories": 320,
+        "protein": 12,
+        "carbohydrates": 55,
+        "fat": 5,
+        "fiber": 8
+      },
+      "substitutions": ["Lentil instead of beans", "Broccoli instead of kale"],
+      "tips": "Iron and magnesium help relieve menstrual cramps"
+    },
+    {
+      "id": 9,
+      "locale": "en-US",
+      "title": "Chicken Breast with Butternut Squash",
+      "shortDescription": "Protein-rich dinner for maintenance",
+      "mealType": "dinner",
+      "dietGroups": ["omnivore"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["maintenance", "muscle-gain"],
+      "healthProfiles": [],
+      "nutritionFocus": ["high-protein", "low-fat"],
+      "prepTimeMinutes": 35,
+      "difficulty": "easy",
+      "servings": 2,
+      "ingredients": [
+        {"name": "Chicken breast", "amount": 300, "unit": "g"},
+        {"name": "Butternut squash", "amount": 300, "unit": "g"},
+        {"name": "Onion", "amount": 1, "unit": "unit"},
+        {"name": "Vegetable broth", "amount": 500, "unit": "ml"},
+        {"name": "Salt and pepper", "amount": 1, "unit": "to taste"}
+      ],
+      "preparationSteps": [
+        "1. Cut chicken into cubes",
+        "2. Cut squash into cubes",
+        "3. Chop onion",
+        "4. Sauté onion in a pan",
+        "5. Add chicken and brown",
+        "6. Add squash and broth",
+        "7. Cook 25 minutes until tender"
+      ],
+      "nutritionPerServing": {
+        "calories": 280,
+        "protein": 40,
+        "carbohydrates": 20,
+        "fat": 4,
+        "fiber": 4
+      },
+      "substitutions": ["Fish instead of chicken", "Carrot instead of squash"],
+      "tips": "Butternut squash is rich in vitamin A for immunity"
+    },
+    {
+      "id": 10,
+      "locale": "en-US",
+      "title": "Protein Shake Pre-Workout",
+      "shortDescription": "Pre-workout high in carbs and energy",
+      "mealType": "pre-workout",
+      "dietGroups": ["omnivore", "vegetarian"],
+      "restrictions": ["gluten-free"],
+      "goals": ["energy", "muscle-gain"],
+      "healthProfiles": [],
+      "nutritionFocus": ["high-carb", "quick-energy", "high-protein"],
+      "prepTimeMinutes": 5,
+      "difficulty": "easy",
+      "servings": 1,
+      "ingredients": [
+        {"name": "Whey protein", "amount": 30, "unit": "g"},
+        {"name": "Banana", "amount": 1, "unit": "unit"},
+        {"name": "Honey", "amount": 1, "unit": "tbsp"},
+        {"name": "Skim milk", "amount": 200, "unit": "ml"},
+        {"name": "Ice", "amount": 100, "unit": "g"}
+      ],
+      "preparationSteps": [
+        "1. Place milk in blender",
+        "2. Add sliced banana",
+        "3. Add whey protein",
+        "4. Add honey",
+        "5. Add ice",
+        "6. Blend until smooth",
+        "7. Serve immediately"
+      ],
+      "nutritionPerServing": {
+        "calories": 310,
+        "protein": 32,
+        "carbohydrates": 38,
+        "fat": 2,
+        "fiber": 2
+      },
+      "substitutions": ["Apple instead of banana", "Coconut sugar instead of honey"],
+      "tips": "Consume 30-60 minutes before workout"
+    }
+  ]
+}

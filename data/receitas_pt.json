@@ -1,0 +1,407 @@
+{
+  "locale": "pt-BR",
+  "version": "1.0",
+  "receitas": [
+    {
+      "id": 1,
+      "locale": "pt-BR",
+      "title": "Aveia com Banana e Mel",
+      "shortDescription": "Café da manhã vegano rico em fibras e energia",
+      "mealType": "breakfast",
+      "dietGroups": ["vegan", "vegetarian"],
+      "restrictions": ["gluten-free"],
+      "goals": ["weight-loss", "energy"],
+      "healthProfiles": [],
+      "nutritionFocus": ["high-fiber", "low-glycemic"],
+      "prepTimeMinutes": 10,
+      "difficulty": "easy",
+      "servings": 1,
+      "ingredients": [
+        {"name": "Aveia em flocos", "amount": 50, "unit": "g"},
+        {"name": "Banana", "amount": 1, "unit": "unidade"},
+        {"name": "Mel", "amount": 1, "unit": "colher de sopa"},
+        {"name": "Leite de amêndoa", "amount": 200, "unit": "ml"},
+        {"name": "Canela", "amount": 0.5, "unit": "colher de chá"}
+      ],
+      "preparationSteps": [
+        "1. Despeje o leite de amêndoa em uma panela",
+        "2. Adicione a aveia e mexa constantemente",
+        "3. Cozinhe por 5 minutos em fogo médio",
+        "4. Corte a banana em rodelas",
+        "5. Despeje a aveia em uma tigela",
+        "6. Coloque a banana por cima",
+        "7. Regue com mel e polvilhe canela"
+      ],
+      "nutritionPerServing": {
+        "calories": 280,
+        "protein": 8,
+        "carbohydrates": 52,
+        "fat": 4,
+        "fiber": 6
+      },
+      "substitutions": ["Leite de coco ao invés de amêndoa", "Maçã ao invés de banana"],
+      "tips": "Prepare a noite anterior para ganhar tempo pela manhã"
+    },
+    {
+      "id": 2,
+      "locale": "pt-BR",
+      "title": "Omelete de Claras com Espinafre",
+      "shortDescription": "Café da manhã proteico para ganho de massa",
+      "mealType": "breakfast",
+      "dietGroups": ["omnivore", "vegetarian"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["muscle-gain", "maintenance"],
+      "healthProfiles": [],
+      "nutritionFocus": ["high-protein", "low-fat"],
+      "prepTimeMinutes": 12,
+      "difficulty": "easy",
+      "servings": 1,
+      "ingredients": [
+        {"name": "Claras de ovo", "amount": 4, "unit": "unidade"},
+        {"name": "Espinafre fresco", "amount": 100, "unit": "g"},
+        {"name": "Cebola", "amount": 0.5, "unit": "unidade"},
+        {"name": "Azeite de oliva", "amount": 1, "unit": "colher de chá"},
+        {"name": "Sal e pimenta", "amount": 1, "unit": "a gosto"}
+      ],
+      "preparationSteps": [
+        "1. Pique a cebola e o espinafre",
+        "2. Aqueça o azeite em uma frigideira antiaderente",
+        "3. Refogue a cebola até ficar translúcida",
+        "4. Adicione o espinafre e deixe murchar",
+        "5. Bata as claras com sal e pimenta",
+        "6. Despeje as claras sobre os vegetais",
+        "7. Cozinhe até firmar, dobrando a omelete no meio"
+      ],
+      "nutritionPerServing": {
+        "calories": 145,
+        "protein": 28,
+        "carbohydrates": 5,
+        "fat": 2,
+        "fiber": 1
+      },
+      "substitutions": ["Brócolis ao invés de espinafre", "Tomate ao invés de cebola"],
+      "tips": "Use frigideira antiaderente para não precisar de óleo extra"
+    },
+    {
+      "id": 3,
+      "locale": "pt-BR",
+      "title": "Smoothie de Frutas Vermelhas",
+      "shortDescription": "Lanche vegano rico em antioxidantes",
+      "mealType": "snack",
+      "dietGroups": ["vegan", "vegetarian"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["energy", "weight-loss"],
+      "healthProfiles": ["menstrual"],
+      "nutritionFocus": ["anti-inflammatory", "high-fiber"],
+      "prepTimeMinutes": 5,
+      "difficulty": "easy",
+      "servings": 1,
+      "ingredients": [
+        {"name": "Morango", "amount": 100, "unit": "g"},
+        {"name": "Mirtilo", "amount": 80, "unit": "g"},
+        {"name": "Framboesa", "amount": 60, "unit": "g"},
+        {"name": "Leite de coco", "amount": 200, "unit": "ml"},
+        {"name": "Mel", "amount": 1, "unit": "colher de sopa"}
+      ],
+      "preparationSteps": [
+        "1. Coloque as frutas vermelhas no liquidificador",
+        "2. Adicione o leite de coco",
+        "3. Adicione o mel",
+        "4. Bata até ficar homogêneo",
+        "5. Sirva imediatamente com gelo"
+      ],
+      "nutritionPerServing": {
+        "calories": 210,
+        "protein": 3,
+        "carbohydrates": 42,
+        "fat": 5,
+        "fiber": 5
+      },
+      "substitutions": ["Leite de amêndoa ao invés de coco", "Açúcar de coco ao invés de mel"],
+      "tips": "Congele as frutas para uma textura mais cremosa"
+    },
+    {
+      "id": 4,
+      "locale": "pt-BR",
+      "title": "Frango Grelhado com Brócolis e Batata-doce",
+      "shortDescription": "Almoço balanceado para ganho de massa",
+      "mealType": "lunch",
+      "dietGroups": ["omnivore"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["muscle-gain", "maintenance"],
+      "healthProfiles": [],
+      "nutritionFocus": ["high-protein", "high-carb"],
+      "prepTimeMinutes": 30,
+      "difficulty": "easy",
+      "servings": 2,
+      "ingredients": [
+        {"name": "Peito de frango", "amount": 300, "unit": "g"},
+        {"name": "Brócolis", "amount": 200, "unit": "g"},
+        {"name": "Batata-doce", "amount": 250, "unit": "g"},
+        {"name": "Azeite de oliva", "amount": 2, "unit": "colher de sopa"},
+        {"name": "Limão", "amount": 1, "unit": "unidade"},
+        {"name": "Sal e pimenta", "amount": 1, "unit": "a gosto"}
+      ],
+      "preparationSteps": [
+        "1. Corte a batata-doce em cubos",
+        "2. Asse a batata-doce a 180°C por 20 minutos",
+        "3. Tempere o frango com sal, pimenta e limão",
+        "4. Grelhe o frango por 12 minutos de cada lado",
+        "5. Cozinhe o brócolis no vapor por 10 minutos",
+        "6. Regue tudo com azeite de oliva"
+      ],
+      "nutritionPerServing": {
+        "calories": 420,
+        "protein": 45,
+        "carbohydrates": 35,
+        "fat": 8,
+        "fiber": 5
+      },
+      "substitutions": ["Salmão ao invés de frango", "Cenoura ao invés de brócolis"],
+      "tips": "Prepare em quantidade dupla para ter marmita pronta"
+    },
+    {
+      "id": 5,
+      "locale": "pt-BR",
+      "title": "Salada de Quinoa com Grão-de-bico",
+      "shortDescription": "Almoço vegetariano rico em ferro",
+      "mealType": "lunch",
+      "dietGroups": ["vegetarian", "vegan"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["weight-loss", "maintenance"],
+      "healthProfiles": ["pregnant", "menstrual"],
+      "nutritionFocus": ["high-iron", "high-protein", "high-fiber"],
+      "prepTimeMinutes": 20,
+      "difficulty": "easy",
+      "servings": 2,
+      "ingredients": [
+        {"name": "Quinoa cozida", "amount": 150, "unit": "g"},
+        {"name": "Grão-de-bico cozido", "amount": 150, "unit": "g"},
+        {"name": "Tomate", "amount": 1, "unit": "unidade"},
+        {"name": "Pepino", "amount": 1, "unit": "unidade"},
+        {"name": "Alface", "amount": 100, "unit": "g"},
+        {"name": "Limão", "amount": 1, "unit": "unidade"},
+        {"name": "Azeite de oliva", "amount": 2, "unit": "colher de sopa"}
+      ],
+      "preparationSteps": [
+        "1. Cozinhe a quinoa conforme instruções",
+        "2. Aquça o grão-de-bico se estiver frio",
+        "3. Pique o tomate, pepino e alface",
+        "4. Misture tudo em uma tigela grande",
+        "5. Tempere com suco de limão e azeite",
+        "6. Deixe descansar 10 minutos antes de servir"
+      ],
+      "nutritionPerServing": {
+        "calories": 380,
+        "protein": 14,
+        "carbohydrates": 52,
+        "fat": 10,
+        "fiber": 10
+      },
+      "substitutions": ["Lentilha ao invés de grão-de-bico", "Arroz integral ao invés de quinoa"],
+      "tips": "Prepare a noite anterior para facilitar o almoço"
+    },
+    {
+      "id": 6,
+      "locale": "pt-BR",
+      "title": "Salmão ao Forno com Limão",
+      "shortDescription": "Almoço anti-inflamatório para recuperação",
+      "mealType": "lunch",
+      "dietGroups": ["omnivore", "pescatarian"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["maintenance", "energy"],
+      "healthProfiles": ["postpartum", "menstrual"],
+      "nutritionFocus": ["anti-inflammatory", "high-omega3", "high-protein"],
+      "prepTimeMinutes": 25,
+      "difficulty": "easy",
+      "servings": 2,
+      "ingredients": [
+        {"name": "Filé de salmão", "amount": 300, "unit": "g"},
+        {"name": "Limão", "amount": 2, "unit": "unidade"},
+        {"name": "Azeite de oliva", "amount": 2, "unit": "colher de sopa"},
+        {"name": "Alho", "amount": 2, "unit": "dente"},
+        {"name": "Sal e pimenta", "amount": 1, "unit": "a gosto"},
+        {"name": "Brócolis", "amount": 200, "unit": "g"}
+      ],
+      "preparationSteps": [
+        "1. Preaqueça o forno a 180°C",
+        "2. Coloque o salmão em papel alumínio",
+        "3. Esprema o limão sobre o salmão",
+        "4. Adicione alho picado, sal e pimenta",
+        "5. Regue com azeite",
+        "6. Feche o papel alumínio e asse por 20 minutos",
+        "7. Cozinhe o brócolis no vapor"
+      ],
+      "nutritionPerServing": {
+        "calories": 380,
+        "protein": 42,
+        "carbohydrates": 8,
+        "fat": 20,
+        "fiber": 3
+      },
+      "substitutions": ["Truta ao invés de salmão", "Cenoura ao invés de brócolis"],
+      "tips": "O salmão é rico em ômega-3, ótimo para inflamação"
+    },
+    {
+      "id": 7,
+      "locale": "pt-BR",
+      "title": "Bolo de Banana Sem Glúten",
+      "shortDescription": "Lanche sem glúten para gestante",
+      "mealType": "snack",
+      "dietGroups": ["vegetarian", "vegan"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["energy", "maintenance"],
+      "healthProfiles": ["pregnant"],
+      "nutritionFocus": ["high-fiber", "low-glycemic"],
+      "prepTimeMinutes": 35,
+      "difficulty": "medium",
+      "servings": 8,
+      "ingredients": [
+        {"name": "Banana", "amount": 3, "unit": "unidade"},
+        {"name": "Farinha de amêndoa", "amount": 150, "unit": "g"},
+        {"name": "Ovos", "amount": 3, "unit": "unidade"},
+        {"name": "Mel", "amount": 3, "unit": "colher de sopa"},
+        {"name": "Fermento em pó", "amount": 1, "unit": "colher de chá"},
+        {"name": "Canela", "amount": 1, "unit": "colher de chá"}
+      ],
+      "preparationSteps": [
+        "1. Preaqueça o forno a 180°C",
+        "2. Amasse as bananas em uma tigela",
+        "3. Bata os ovos com o mel",
+        "4. Misture os ovos com as bananas",
+        "5. Adicione a farinha de amêndoa, fermento e canela",
+        "6. Despeje em forma untada",
+        "7. Asse por 30 minutos até dourar"
+      ],
+      "nutritionPerServing": {
+        "calories": 180,
+        "protein": 6,
+        "carbohydrates": 20,
+        "fat": 8,
+        "fiber": 3
+      },
+      "substitutions": ["Farinha de coco ao invés de amêndoa", "Açúcar de coco ao invés de mel"],
+      "tips": "Gestantes devem evitar alimentos muito processados"
+    },
+    {
+      "id": 8,
+      "locale": "pt-BR",
+      "title": "Arroz Integral com Feijão e Couve",
+      "shortDescription": "Jantar leve para período menstrual",
+      "mealType": "dinner",
+      "dietGroups": ["vegan", "vegetarian"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["weight-loss", "maintenance"],
+      "healthProfiles": ["menstrual"],
+      "nutritionFocus": ["high-iron", "high-magnesium", "anti-inflammatory"],
+      "prepTimeMinutes": 40,
+      "difficulty": "easy",
+      "servings": 2,
+      "ingredients": [
+        {"name": "Arroz integral", "amount": 150, "unit": "g"},
+        {"name": "Feijão cozido", "amount": 150, "unit": "g"},
+        {"name": "Couve", "amount": 150, "unit": "g"},
+        {"name": "Cebola", "amount": 1, "unit": "unidade"},
+        {"name": "Alho", "amount": 2, "unit": "dente"},
+        {"name": "Azeite de oliva", "amount": 1, "unit": "colher de sopa"}
+      ],
+      "preparationSteps": [
+        "1. Cozinhe o arroz integral conforme instruções",
+        "2. Refogue a cebola e alho no azeite",
+        "3. Adicione o feijão e deixe aquecer",
+        "4. Pique a couve e refogue até murchar",
+        "5. Misture tudo em um prato",
+        "6. Sirva quente"
+      ],
+      "nutritionPerServing": {
+        "calories": 320,
+        "protein": 12,
+        "carbohydrates": 55,
+        "fat": 5,
+        "fiber": 8
+      },
+      "substitutions": ["Lentilha ao invés de feijão", "Brócolis ao invés de couve"],
+      "tips": "Ferro e magnésio ajudam a aliviar cólicas menstruais"
+    },
+    {
+      "id": 9,
+      "locale": "pt-BR",
+      "title": "Peito de Frango com Abóbora",
+      "shortDescription": "Jantar proteico para manutenção",
+      "mealType": "dinner",
+      "dietGroups": ["omnivore"],
+      "restrictions": ["gluten-free", "lactose-free"],
+      "goals": ["maintenance", "muscle-gain"],
+      "healthProfiles": [],
+      "nutritionFocus": ["high-protein", "low-fat"],
+      "prepTimeMinutes": 35,
+      "difficulty": "easy",
+      "servings": 2,
+      "ingredients": [
+        {"name": "Peito de frango", "amount": 300, "unit": "g"},
+        {"name": "Abóbora", "amount": 300, "unit": "g"},
+        {"name": "Cebola", "amount": 1, "unit": "unidade"},
+        {"name": "Caldo de legumes", "amount": 500, "unit": "ml"},
+        {"name": "Sal e pimenta", "amount": 1, "unit": "a gosto"}
+      ],
+      "preparationSteps": [
+        "1. Corte o frango em cubos",
+        "2. Corte a abóbora em cubos",
+        "3. Pique a cebola",
+        "4. Refogue a cebola em uma panela",
+        "5. Adicione o frango e doure",
+        "6. Adicione a abóbora e o caldo",
+        "7. Cozinhe por 25 minutos até ficar macio"
+      ],
+      "nutritionPerServing": {
+        "calories": 280,
+        "protein": 40,
+        "carbohydrates": 20,
+        "fat": 4,
+        "fiber": 4
+      },
+      "substitutions": ["Cenoura ao invés de abóbora", "Peixe ao invés de frango"],
+      "tips": "Abóbora é rica em vitamina A para imunidade"
+    },
+    {
+      "id": 10,
+      "locale": "pt-BR",
+      "title": "Batida de Proteína Pré-Treino",
+      "shortDescription": "Pré-treino alto em carboidratos e energia",
+      "mealType": "pre-workout",
+      "dietGroups": ["omnivore", "vegetarian"],
+      "restrictions": ["gluten-free"],
+      "goals": ["energy", "muscle-gain"],
+      "healthProfiles": [],
+      "nutritionFocus": ["high-carb", "quick-energy", "high-protein"],
+      "prepTimeMinutes": 5,
+      "difficulty": "easy",
+      "servings": 1,
+      "ingredients": [
+        {"name": "Whey protein", "amount": 30, "unit": "g"},
+        {"name": "Banana", "amount": 1, "unit": "unidade"},
+        {"name": "Mel", "amount": 1, "unit": "colher de sopa"},
+        {"name": "Leite desnatado", "amount": 200, "unit": "ml"},
+        {"name": "Gelo", "amount": 100, "unit": "g"}
+      ],
+      "preparationSteps": [
+        "1. Coloque o leite no liquidificador",
+        "2. Adicione a banana cortada",
+        "3. Adicione o whey protein",
+        "4. Adicione o mel",
+        "5. Adicione gelo",
+        "6. Bata até ficar homogêneo",
+        "7. Sirva imediatamente"
+      ],
+      "nutritionPerServing": {
+        "calories": 310,
+        "protein": 32,
+        "carbohydrates": 38,
+        "fat": 2,
+        "fiber": 2
+      },
+      "substitutions": ["Maçã ao invés de banana", "Açúcar de coco ao invés de mel"],
+      "tips": "Consumir 30-60 minutos antes do treino"
+    }
+  ]
+}
